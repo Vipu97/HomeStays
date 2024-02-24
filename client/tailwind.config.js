@@ -7,7 +7,10 @@ export default {
   theme: {
     extend: {
       colors:{
-        pink:'#F5385D'
+        pink:'#F5385D',
+      },
+      screens:{
+        'xs': '500px',
       }
     },
   },

@@ -1,68 +1,124 @@
-import React, { useContext, useState } from 'react'
-import { UserContext } from '../Context/userContext';
-import { Link, Navigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import PlacesPages from './PlacesPages';
+import React, { useContext, useState } from "react";
+import { UserContext } from "../Context/userContext";
+import { Navigate, useParams } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AccountNav from "../Components/AccountNav";
+import Spinner from "../Components/Spinner";
+import BookingsPage from "./BookingsPage";
+import PlacesPages from "./PlacesPages";
 
 const Profile = () => {
-    const {user,ready,setUser} = useContext(UserContext);
-    const [redirect,setRedirect] = useState(null);
+  const { user, ready, setUser } = useContext(UserContext);
+  const [redirect, setRedirect] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    if(!ready)
-      return 'Loading...';
-    if(ready && !user)
-      return <Navigate to={'/login'} />
+  let { subpage } = useParams();
+  if (subpage === undefined) {
+    subpage = "profile";
+  }
 
-    let {subpage} = useParams();
-    if(subpage === undefined)
-      subpage = 'profile'
+  if (!ready) return <Spinner width={200} height={200} />;
+  if (ready && !user && !redirect) return <Navigate to={"/login"} />;
 
-    function linkClass(type){
-        let classes = "py-2 px-6 flex gap-1 rounded-full"
-        if(type === subpage) 
-           classes += ' bg-pink text-white'
-        else
-           classes += ' bg-gray-200'
-        return classes;
-    } 
-    async function logout(){
-        await axios.post('/logout');
-        setRedirect('/');
-        setUser(null);
-    }
-    if(redirect)
-       return <Navigate to={redirect} />
-    return (
+  const logout = async () => {
+    setLoading(true);
+    await axios.post("/logout");
+    toast.info("Logout Successfully!!");
+    setUser(null);
+    setLoading(false);
+    setRedirect("/");
+  };
+  if (redirect) return <Navigate to={redirect} />;
+
+  return (
     <div>
-        <nav className='w-full flex justify-center mt-8 gap-4 mb-8 font-semibold'>
-            <Link className={linkClass('profile')} to={'/account'}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            My Profile
-            </Link>
-            <Link className={linkClass('bookings')} to={'/account/bookings'}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-            </svg>
-             My Bookings</Link>
-            <Link className={linkClass('places')} to={'/account/places'}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-            </svg>
-            My Accommodations
-            </Link>
-        </nav>
-        {subpage === "profile" && (
-            <div className="text-center max-w-lg mx-auto">
-                Logged in as {user.name} by email {user.email}<br />
-                <button className='bg-pink text-white rounded-full max-w-sm mt-2 p-2 w-full font-semibold' 
-                onClick={logout} >Logout</button>
+      <AccountNav subpage={subpage} />
+      {loading ? (
+        <Spinner width={200} height={200}/>
+      ) : (
+        <>
+          {subpage === "profile" && (
+            <div className="text-center w-full max-w-[700px] mx-auto flex flex-col justify-center items-center xs:flex-row">
+              <img
+                src={"/profileIcon.jpg"}
+                alt="profile-icon"
+                className="w-[200px] sm:w-[300px]"
+              />
+              <div className="flex flex-col gap-6 sm:gap-16">
+                <div className="flex flex-col gap-3">
+                  <div className="flex gap-2 items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                      />
+                    </svg>
+                    <h1 className="text-[20px] font-medium sm:text-[22px]">
+                      Name : <span className="text-gray-500">{user.name}</span>
+                    </h1>
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                      />
+                    </svg>
+                    <h1 className="text-[20px] font-medium sm:text-[22px]">
+                      Email :{" "}
+                      <span className="text-gray-500">{user.email}</span>
+                    </h1>
+                  </div>
+                </div>
+                <div className="flex gap-8 justify-center xs:justify-normal">
+                  <button
+                    onClick={logout}
+                    className="bg-gray-400 font-medium text-[15px] rounded-3xl px-5 py-1.5 flex gap-2 items-center justify-center hover:scale-105 transition-all sm:px-6"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
+                      />
+                    </svg>
+                    Logout
+                  </button>
+                </div>
+              </div>
             </div>
-        )}
-        {subpage === "places" && <PlacesPages />}
+          )}
+          {subpage === "bookings" && <BookingsPage />}
+          {subpage === "places" && <PlacesPages />}
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
