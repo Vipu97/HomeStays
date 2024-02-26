@@ -32,7 +32,7 @@ const IndexPage = () => {
               </div>
               <h2 className="font-bold">{place.address}</h2>
               <h3 className="text-sm text-gray-500">{place.title}</h3>
-              <div className="mt-1 font-semibold">
+              <div className="font-semibold">
                 <span className="font-bold">₹{place.price?.toLocaleString('en-IN')}</span> per night
               </div>
             </Link>

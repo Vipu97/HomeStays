@@ -9,7 +9,7 @@ import { UserContextProvider } from "./Context/userContext";
 import Profile from "./Pages/Profile";
 import SinglePlacePage from "./Pages/SinglePlacePage";
 import AddPlacePage from "./Pages/AddPlacePage";
-import { ToastContainer } from "react-toastify";
+import { Slide, ToastContainer, } from "react-toastify";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -39,8 +39,7 @@ function App() {
           rtl={false}
           pauseOnFocusLoss
           draggable
-          pauseOnHover
-          transition:Bounce
+          transition = {Slide}
         />
       </UserContextProvider>
   );
