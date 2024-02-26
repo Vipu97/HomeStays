@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Spinner from "../Components/Spinner";
+import Image from "../Components/Image";
 
 const IndexPage = () => {
   const [allPlaces, setAllPlaces] = useState([]);
@@ -21,11 +22,11 @@ const IndexPage = () => {
       {allPlaces.length > 0 &&
         allPlaces.map((place) => {
           return (
-            <Link to={`/place/${place._id}`} key={place._id} className="w-full max-w-[480px] ">
+            <Link to={`/place/${place._id}`} key={place._id} className="w-full max-w-[400px] ">
               <div className="bg-gray-500 mb-2 rounded-2xl flex hover:scale-105 transition-all">
-                <img
-                  className="rounded-2xl h-[280px] w-[100%]"
-                  src={`http://localhost:4000/uploads/${place.photos[0]}`}
+                <Image 
+                  className="rounded-2xl h-[220px] w-[100%] xs:h-[250px] sm:h-[280px]"
+                  src={place.photos?.[0]}
                   alt="place-main-photo"
                 />
               </div>

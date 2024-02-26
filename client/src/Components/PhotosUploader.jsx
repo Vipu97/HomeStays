@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Image from "./Image";
 
 const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => {
   const addPhotoLink = async (e) => {
@@ -63,8 +64,8 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
         {addedPhotos.length > 0 &&
           addedPhotos.map((link) => (
             <div className="h-32 flex relative" key={link}>
-              <img
-                src={"http://localhost:4000/uploads/" + link}
+              <Image
+                src={link}
                 alt="uploaded-image-link"
                 className="rounded-xl w-full object-cover"
               />

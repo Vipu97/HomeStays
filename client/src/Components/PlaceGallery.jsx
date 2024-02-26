@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "./Image";
 
 const PlaceGallery = ({ title, photos }) => {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
@@ -30,7 +31,7 @@ const PlaceGallery = ({ title, photos }) => {
           {photos?.length > 0 &&
             photos.map((photo) => (
               <div>
-                <img src={`http://localhost:4000/uploads/${photo}`} alt="single-photo" />
+                <Image src={photo} alt="single-photo" />
               </div>
             ))}
         </div>
@@ -44,10 +45,10 @@ const PlaceGallery = ({ title, photos }) => {
         <div className="col-span-2 overflow-hidden row-span-2">
           {photos?.[0] && (
             <div className="w-full h-full overflow-hidden">
-              <img
+              <Image
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer object-cover rounded-xl h-full w-full"
-                src={`http://localhost:4000/uploads/${photos[0]}`}
+                src={photos[0]}
                 alt="place-main-photo"
               />
             </div>
@@ -55,21 +56,21 @@ const PlaceGallery = ({ title, photos }) => {
         </div>
         <div className="hidden row-span-1 col-span-1 gap-2 md:block">
           {photos?.[1] && (
-            <img
+            <Image
               onClick={() => setShowAllPhotos(true)}
               className="cursor-pointer object-cover rounded-xl w-full h-full"
-              src={`http://localhost:4000/uploads/${photos[1]}`}
-              alt=""
+              src={photos[1]}
+              alt="place-second-photo"
             />
           )}
         </div>
         <div className="hidden md:block">
             {photos?.[2] && (
-              <img
+              <Image
                 onClick={() => setShowAllPhotos(true)}
                 className="cursor-pointer object-cover rounded-xl h-full w-full"
-                src={`http://localhost:4000/uploads/${photos[2]}`}
-                alt=""
+                src={photos[2]}
+                alt="place-third-photo"
               />
             )}
         </div>

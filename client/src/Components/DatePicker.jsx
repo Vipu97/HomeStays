@@ -23,7 +23,6 @@ const footer = () => {
   ) 
 }
 const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
-  console.log(disabledDates)
   const updateDates = (dates) => {
     const checkin = formattedDate(dates[0].$d.toLocaleDateString("en-IN"));
     const checkout = formattedDate(dates[1].$d.toLocaleDateString("en-IN"));

@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import CancelBookingsWidget from "./CancelBookingsWidget";
 
 export default function BookingWidget({ place }) {
-  console.log("Components re renderd")
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
@@ -60,7 +59,6 @@ export default function BookingWidget({ place }) {
       });
       await axios.put("/user/bookings", {
         bookingId: data._id,
-        userId: user.id,
         bookedPlace: place._id,
       });
       await axios.put(`/place/${place._id}`, { checkIn : formattedDate(checkIn), checkOut : formattedDate(checkOut)});

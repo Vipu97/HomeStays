@@ -10,8 +10,8 @@ import Spinner from "../Components/Spinner";
 
 const SinglePlacePage = () => {
   const [place, setPlace] = useState(null);
-  const [alreadyBooked,setAlreadyBooked] = useState(false);
-  const [loading,setLoading] = useState(true);
+  const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const { user } = useContext(UserContext);
 
@@ -23,51 +23,56 @@ const SinglePlacePage = () => {
     };
     //function to check whether current place is already booked by user
     const fetchUserDetails = async () => {
-      const {data} = await axios.get(`/user`);
+      const { data } = await axios.get(`/user`);
       data.bookedPlaces.includes(id) && setAlreadyBooked(true);
       setLoading(false);
-    }
+    };
     fetchPlaceDetails();
-    if(user)
-       fetchUserDetails();
-  },[]);
+    if (user) fetchUserDetails();
+  }, []);
 
-  if(!loading && !place)
-    return;
+  if (!loading && !place) return;
   return (
     <>
-    {loading ? <Spinner height={200} width={200}/> : (
-    <div className="mt-4 bg-gray-200 px-8 pt-8 rounded-3xl">
-      <h1 className="text-3xl">{place.title}</h1>
-      <AddressLink address={place.address} />
-      <PlaceGallery title={place.title} photos={place.photos} />
-      <div className="mt-8 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
-        <div>
-          <div>
-            <h2 className="font-semibold text-2xl mb-1">Description</h2>
-            {place.description}
+      {loading ? (
+        <Spinner height={200} width={200} />
+      ) : (
+        <div className="mt-4 bg-gray-200 px-8 pt-8 rounded-3xl">
+          <h1 className="text-3xl">{place.title}</h1>
+          <AddressLink address={place.address} />
+          <PlaceGallery title={place.title} photos={place.photos} />
+          <div className="mt-8 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
+            <div>
+              <div>
+                <h2 className="font-semibold text-2xl mb-1">Description</h2>
+                {place.description}
+              </div>
+              <h2 className="font-semibold text-[17px] mt-4">
+                Maximum number of guests allowed : {place.maxGuests}
+              </h2>
+              <div className="mt-6">
+                <h2 className="text-2xl font-semibold">
+                  What this place offers:
+                </h2>
+                <PerksOffers perks={place.perks} />
+              </div>
+            </div>
+            <div className="mt-2 h-fi">
+              {(!user || (user && user.id !== place.owner)) && (
+                <BookingWidget place={place} alreadyBooked={alreadyBooked} />
+              )}
+            </div>
           </div>
-          <h2 className="font-semibold text-[17px] mt-4">
-            Maximum number of guests allowed : {place.maxGuests}
-          </h2>
-          <div className="mt-6">
-            <h2 className="text-2xl font-semibold">What this place offers:</h2>
-            <PerksOffers perks={place.perks} />
+          <div className="bg-white -mx-8 px-8 py-8 border-t">
+            <div>
+              <h2 className="font-semibold text-2xl">Extra info</h2>
+            </div>
+            <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5">
+              {place.extraInfo}
+            </div>
           </div>
         </div>
-        <div className="mt-2 h-fi">
-          {(!user || (user && user.id !== place.owner)) && <BookingWidget place={place} alreadyBooked={alreadyBooked} />}
-        </div>
-      </div>
-      <div className="bg-white -mx-8 px-8 py-8 border-t">
-        <div>
-          <h2 className="font-semibold text-2xl">Extra info</h2>
-        </div>
-        <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5">
-          {place.extraInfo}
-        </div>
-      </div>
-    </div>)}
+      )}
     </>
   );
 };

@@ -90,7 +90,7 @@ const AddPlacePage = () => {
 
   if (redirect) return <Navigate to={"/account/places"} />;
   return (
-    <form onSubmit={addNewPlace} className="px-2">
+    <form onSubmit={addNewPlace} className="px-2 md:px-8">
       <InputHeading text="Title" />
       <InputDesc
         text={
@@ -173,7 +173,7 @@ const AddPlacePage = () => {
       </div>
       <button
         className="bg-pink w-full rounded-2xl text-white py-2 font-semibold text-xl mt-3 mb-5 hover:scale-95 transition-all" onClick={(e) => addNewPlace} >
-        Save
+        Save Your Place
       </button>
     </form>
   );

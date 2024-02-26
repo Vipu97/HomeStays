@@ -1,4 +1,4 @@
-node_modules
+node_modules/
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -8,3 +8,4 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+.env

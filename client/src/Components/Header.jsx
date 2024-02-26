@@ -5,7 +5,7 @@ import { UserContext } from "../Context/userContext";
 const Header = () => {
   const { user } = useContext(UserContext);
   return (
-    <header className="py-5 px-8 flex justify-between xs:px-4 lg:px-18">
+    <header className="py-5 pl-5 pr-3 flex justify-between xs:px-4 lg:px-18">
       <div className="logo">
         <Link to="/" className="flex items-center gap-1">
           <svg
@@ -22,10 +22,10 @@ const Header = () => {
               d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
             />
           </svg>
-          <span className="font-bold text-2xl text-pink">airbnb</span>
+          <span className="font-bold text-xl text-pink xs:block xs:text-2xl">HomeStays</span>
         </Link>
       </div>
-      <div className="search-part flex items-center border border-gray-300 rounded-full py-2 px-2 gap-1 shadow-md shadow-gray-300 hidden sm:gap-3 xs:flex sm:px-4">
+      <div className="search-part hidden flex items-center border border-gray-300 rounded-full py-2 px-2 gap-1 shadow-md shadow-gray-300 sm:gap-3 sm:flex sm:px-4">
         <div className="font-bold">Anywhere</div>
         <div className="border border-gray-300 h-6"></div>
         <div className="font-bold">Any week</div>

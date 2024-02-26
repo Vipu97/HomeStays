@@ -24,7 +24,7 @@ const Profile = () => {
 
   const logout = async () => {
     setLoading(true);
-    await axios.post("/logout");
+    await axios.post("/user/logout");
     toast.info("Logout Successfully!!");
     setUser(null);
     setLoading(false);

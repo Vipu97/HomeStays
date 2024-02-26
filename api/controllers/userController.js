@@ -2,16 +2,12 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const jwtSecret = "VipinKiroula";
-const cors = require('cors');
+const jwtSecret = process.env.JWT_SECRET;
 const bcrypt = require('bcryptjs');
+const isLoggedIn = require('../middlewares/userAuth');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
-router.use(cors({
-    credentials: true,
-    origin: 'http://localhost:5173',
-}))
 
 //route to handle new registration for user.
 router.post('/register', async (req, res) => {
@@ -29,92 +25,82 @@ router.post('/register', async (req, res) => {
 })
 
 //route to handle user login
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    try {
-        const user = await User.findOne({ email });
-        if (user) {
-            const passOk = bcrypt.compareSync(password, user.password);
-            if (passOk) {
-                jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, {}, (err, token) => {
-                    if (err)
-                        throw err;
-                    res.cookie('token', token).json(user);
-                });
-            }
-            else
-                res.status(422).json("Wrong Password");
-        }
-        else
-            res.status(404).json('User not Found');
-    } catch (e) {
-        console.log("Eror while finding user", e);
-    }
-});
 
+router.post('/login',async (req,res) => {
+    try{
+        const {email,password} = req.body;
+        const user = await User.findOne({email});
+        if(!user)
+           return res.status(404).json("User Not Exist");
+        const passOk =  bcrypt.compareSync(password, user.password);
+        if(!passOk)
+           return res.status(422).json("Wrong Password");
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, {}, (err, token) => {
+            if (err)
+                throw err;
+            res.cookie('token', token).json(user);
+        });
+    }catch(err){
+        res.status(500).json({
+            message : "Internal Server Error",
+            error : err.message
+        });
+    }
+})
 //route to hadle logout of user
 router.post('/logout', async (req, res) => {
     res.cookie('token', '').json(true);
 })
 
-//route to get data for user profile
-router.get('/profile', (req, res) => {
-    const { token } = req.cookies;
-    if (token) {
-        jwt.verify(token, jwtSecret, {}, (err, user) => {
-            if (err)
-                throw err;
-            res.json(user);
-        })
+
+//routes to get users full data.
+router.get('/', isLoggedIn, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message, // Include the error message in the response
+        });
     }
-    else
-        res.json(null);
+});
+
+//route to get data for user profile
+router.get('/profile', isLoggedIn , (req,res) =>{
+    res.json(req.user);
 })
 
-//routes to get users all the data.
-router.get('/', async (req,res) => {
+//route to update add bookings and bookedPlaces data inside user on a booking.
+router.put('/bookings', isLoggedIn , async (req,res) => {
     try{
-        const {token} = req.cookies;
-        jwt.verify(token,jwtSecret,{},async (err,userData) => {
-            if(err)  throw err;
-            const user = await User.findById(userData.id);
-            res.json(user)
-        })
-    }catch(err){
-        res.json(err.message)
-    }
-})
-//route to update user bookings and bookedPlaces data on a booking.
-router.put('/bookings', async (req,res) => {
-    try{
-        const {bookingId,userId,bookedPlace} = req.body;
+        const {bookingId,bookedPlace} = req.body;
+        const userId = req.user.id;
         const {bookings,bookedPlaces} = await User.findById(userId);
         const updatedAttributes = {
             bookings : [...bookings,bookingId],
             bookedPlaces : [...bookedPlaces,bookedPlace]
         }
-        const updatedUser = await User.findByIdAndUpdate(userId,{$set : updatedAttributes})
-        res.json(updatedUser);
+        const updatedUser = await User.findByIdAndUpdate(userId,{$set : updatedAttributes});
+        res.status(200).json(updatedUser);
     }catch(err){
-        res.json(err.message);
+        res.status(500).json(err.message);
     }
 })
 //routes to delete any booking details from the user 
-router.delete('/bookings', async(req,res) => {
+router.delete('/bookings', isLoggedIn, async(req,res) => {
     try{
-        const {token} = req.cookies;
         const {placeId,bookingId} = req.body;
-        jwt.verify(token, jwtSecret, {}, async(err,userData) => {
-            if(err)
-               throw err;
-            const {bookedPlaces,bookings} = await User.findById(userData.id);
-            const updatedBookedPlaces = bookedPlaces.filter(id => id.toString() !== placeId);
-            const updatedBookings = bookings.filter(id => id.toString() !== bookingId);
-            await User.findByIdAndUpdate(userData.id , {$set : {bookedPlaces : updatedBookedPlaces , bookings : updatedBookings}})
-            res.json("User Bookings Update Successfully");
-        })
+        const userId = req.user.id;
+        const {bookedPlaces,bookings} = await User.findById(userId);
+        const updatedBookedPlaces = bookedPlaces.filter(id => id.toString() !== placeId);
+        const updatedBookings = bookings.filter(id => id.toString() !== bookingId);
+        await User.findByIdAndUpdate(userId , {$set : {bookedPlaces : updatedBookedPlaces , bookings : updatedBookings}})
+        res.status(200).json("User Bookings Update Successfully");
     }catch(e){
-        console.log(e.message);
+        res.status(500).json(e.message);
     }
 })
 
