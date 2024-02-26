@@ -8,4 +8,4 @@ node_modules/
 *.njsproj
 *.sln
 *.sw?
-vars/
+.env
