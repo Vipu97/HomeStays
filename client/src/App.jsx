@@ -11,7 +11,7 @@ import SinglePlacePage from "./Pages/SinglePlacePage";
 import AddPlacePage from "./Pages/AddPlacePage";
 import { ToastContainer } from "react-toastify";
 
-axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
 
 function App() {
