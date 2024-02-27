@@ -31,7 +31,8 @@ const IndexPage = () => {
                 />
               </div>
               <h2 className="font-bold">{place.address}</h2>
-              <h3 className="text-sm text-gray-500">{place.title}</h3>
+              <h3 className="text-sm text-gray-500">{place.title.length > 44 ? `${place.title.substr(0,44)}....` 
+              : `${place.title}`}</h3>
               <div className="font-semibold">
                 <span className="font-bold">₹{place.price?.toLocaleString('en-IN')}</span> per night
               </div>

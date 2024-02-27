@@ -32,24 +32,24 @@ const BookingsPage = () => {
         bookings.map(booking => (
           <Link
             to={`/place/${booking.place}`}
-            className="flex gap-4 w-full bg-gray-200 rounded-2xl max-w-[650px] xs:gap-4"
+            className="flex gap-4 w-full bg-gray-200 rounded-2xl max-w-[650px] xs:gap-4 md:gap-1"
             key = {bookings._id}
           >
-            <div className="w-28 xs:w-40 sm:w-48">
+            <div className="w-48 sm:w-64">
               <Image
                 src={booking.place.photos[0]}
                 alt="booking-perview-photo"
-                className="rounded-xl h-full w-full"
+                className="rounded-xl h-full w-full object-cover"
               />
             </div>
-            <div className="py-1 pr-2 xs:py-2 md:ml-4">
-              <h2 className="text-[16px] font-semibold xs:text-[18px] sm:text-xl leading-4 sm:leading-none">{booking.place.title}</h2>
+            <div className="py-1 pr-2 md:ml-4">
+              <h2 className="text-[16px] font-semibold xs:text-[18px] sm:text-xl leading-5 sm:leading-6">{booking.place.title}</h2>
               <div className="text-md sm:text-xl">
                 <BookingDates
                   booking={booking}
                   className="mb-2 mt-2 text-gray-500 text-[15px]"
                 />
-                <div className="flex gap-1 mt-[-5px] xs:mt-[0px] items-center">
+                <div className="flex gap-1 mt-[-5px] items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -65,7 +65,7 @@ const BookingsPage = () => {
                     />
                   </svg>
                   <span className="text-sm sm:text-xl">
-                    Total price: ₹{booking.price}
+                    Total price: ₹{booking.price?.toLocaleString('en-IN')}
                   </span>
                 </div>
               </div>
