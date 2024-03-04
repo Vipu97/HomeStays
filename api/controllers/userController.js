@@ -53,7 +53,23 @@ router.post('/logout', async (req, res) => {
 })
 
 
-//routes to get users full data.
+//route to update user name or password
+router.put('/',isLoggedIn,async(req,res) => {
+    try{
+        const {newName,newPassword} = req.body;
+        const userId = req.user.id;
+        const newAttributes = {
+            name : newName,
+            password : bcrypt.hashSync(newPassword, bcryptSalt)
+        }
+        const updatedUser = await User.findByIdAndUpdate(userId,{$set : newAttributes});
+        res.status(200).json(updatedUser);
+    }catch(err){
+        res.status(500).json(err.message);
+    }
+})
+
+//route to get users full data.
 router.get('/', isLoggedIn, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);

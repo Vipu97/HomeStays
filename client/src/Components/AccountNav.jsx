@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const AccountNav = ({subpage}) => {
   const linkClass = (type) => {
-    let classes = "py-2 px-6 flex gap-1 rounded-full hover:scale-105 transition-all";
+    let classes = "py-2 px-4 flex gap-1 rounded-full hover:scale-105 transition-all xs:px-6";
     if (type === subpage) classes += " bg-pink text-white";
     else classes += " bg-gray-200";
     return classes;

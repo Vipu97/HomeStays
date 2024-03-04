@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import LoginPages from "./Pages/LoginPage";
+import LoginPage from "./Pages/LoginPage";
 import Layout from "./Components/Layout";
 import IndexPage from "./Pages/IndexPage";
 import RegisterPage from "./Pages/RegisterPage";
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<IndexPage />} />
-            <Route path="/login" element={<LoginPages />} />
+            <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/account" element={<Profile />} />
             <Route path="/account/:subpage" element={<Profile />} />

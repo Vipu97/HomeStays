@@ -61,9 +61,9 @@ const PlacesPages = () => {
         places.length > 0 &&
         places.map((place) => {
           return (
-            <div className="w-full bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[850px] mx-auto">
+            <div className="w-full bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto">
               <div className="flex flex-col gap-2 cursor-pointer sm:flex-row sm:gap-5 items-center">
-                <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto grow shrink-0 sm:w-[200px]">
+                <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto grow shrink-0 sm:w-[200px] md:h-32">
                   <Image
                     src={place.photos[0]}
                     alt="preview-photo"
@@ -71,10 +71,10 @@ const PlacesPages = () => {
                   />
                 </div>
                 <div>
-                  <h2 className="font-semibold text-[18px] text-center sm:text-start">{place.title}</h2>
+                  <h2 className="font-semibold text-[18px] text-center mb-2">{place.title}</h2>
                   <p className="text-sm hidden sm:inline-block">
-                    {place.description.substr(0, 400)}
-                    {place.description.length > 400 && "......"}
+                    {place.description.substr(0, 300)}
+                    {place.description.length > 300 && "......"}
                   </p>
                 </div>
               </div>

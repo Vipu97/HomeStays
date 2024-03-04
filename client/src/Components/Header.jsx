@@ -5,16 +5,16 @@ import { UserContext } from "../Context/userContext";
 const Header = () => {
   const { user } = useContext(UserContext);
   return (
-    <header className="py-5 pl-5 pr-3 flex justify-between xs:px-4 lg:px-18">
+    <header className="py-5 pl-2 flex justify-between xs:px-4 lg:px-18">
       <div className="logo">
-        <Link to="/" className="flex items-center gap-1">
+        <Link to="/" className="flex items-center gap-1 relative top-1.5 xs:top-0.5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-10 h-10 -rotate-90 text-pink"
+            className="w-8 h-8 -rotate-90 text-pink xs:h-10 xs:w-10"
           >
             <path
               strokeLinecap="round"
@@ -25,7 +25,7 @@ const Header = () => {
           <span className="font-bold text-xl text-pink xs:block xs:text-2xl">HomeStays</span>
         </Link>
       </div>
-      <div className="search-part hidden flex items-center border border-gray-300 rounded-full py-2 px-2 gap-1 shadow-md shadow-gray-300 sm:gap-3 sm:flex sm:px-4">
+      <div className="hidden flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-md shadow-gray-300 sm:gap-3 sm:flex sm:px-4">
         <div className="font-bold">Anywhere</div>
         <div className="border border-gray-300 h-6"></div>
         <div className="font-bold">Any week</div>

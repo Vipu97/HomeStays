@@ -10,7 +10,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [redirect, setRedirect] = useState("");
+  const [redirect, setRedirect] = useState(null);
 
   const registerUser = async (e) => {
     e.preventDefault();

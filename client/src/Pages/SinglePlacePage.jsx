@@ -11,6 +11,7 @@ import Spinner from "../Components/Spinner";
 const SinglePlacePage = () => {
   const [place, setPlace] = useState(null);
   const [alreadyBooked, setAlreadyBooked] = useState(false);
+  const [showFullExtraInfo, setShowFullExtraInfo] = useState(false);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const { user } = useContext(UserContext);
@@ -37,7 +38,7 @@ const SinglePlacePage = () => {
       {loading ? (
         <Spinner height={200} width={200} />
       ) : (
-        <div className="mt-4 bg-gray-200 px-8 pt-8 rounded-3xl">
+        <div className="mt-4 bg-gray-200 px-4 pt-3 rounded-3xl xs:px-8 xs:pt-8">
           <h1 className="text-3xl">{place.title}</h1>
           <AddressLink address={place.address} />
           <PlaceGallery title={place.title} photos={place.photos} />
@@ -68,7 +69,27 @@ const SinglePlacePage = () => {
               <h2 className="font-semibold text-2xl">Extra info</h2>
             </div>
             <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5">
-              {place.extraInfo}
+              {showFullExtraInfo ? (
+                <p>
+                  {place.extraInfo}
+                  <span
+                    className="text-pink cursor-pointer font-semibold"
+                    onClick={() => setShowFullExtraInfo(false)}
+                  >
+                    ...show less
+                  </span>
+                </p>
+              ) : (
+                <p>
+                  {place.extraInfo.substring(0, 600)}
+                  <span
+                    className="text-pink cursor-pointer font-semibold"
+                    onClick={() => setShowFullExtraInfo(true)}
+                  >
+                    ..show more
+                  </span>
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -43,11 +43,11 @@ const LoginPage = () => {
       ) : (
         <>
           <h1 className="text-4xl text-center mb-4 font-bold">Login</h1>
-          <form className="max-w-sm mx-auto" onSubmit={handleLogin}>
+          <form className="flex flex-col items-center justify-center" onSubmit={handleLogin}>
             <input
               type="email"
               placeholder="your@email.com"
-              className="w-full border py-2 px-3 my-2 rounded-2xl border-gray-300"
+              className="w-[90%] border py-2 px-3 my-2 rounded-2xl border-gray-300 xs:w-[400px]"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -55,12 +55,13 @@ const LoginPage = () => {
             <input
               type="password"
               placeholder="password"
-              className="w-full border py-2 px-3 my-2 rounded-2xl border-gray-300"
+              className="w-[90%] border py-2 px-3 my-2 rounded-2xl border-gray-300 xs:w-[400px]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button className="bg-pink p-2 w-full text-white rounded-2xl mt-1 hover:scale-95 transition-all">
+            <button className="bg-pink p-2 w-[90%] text-white rounded-2xl mt-1 hover:scale-95 
+            transition-all xs:w-[400px]">
               Login
             </button>
             <div className="text-center mt-1">
