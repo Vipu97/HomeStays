@@ -14,13 +14,13 @@ const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user, setUser } = useContext(UserContext);
-  
+
   let { subpage } = useParams();
   if (subpage === undefined) {
     subpage = "profile";
   }
   
-  if (ready && !user && !redirect) return <Navigate to={"/login"} />;
+  if (!user && !redirect) return <Navigate to={"/login"} />;
 
   const logout = async () => {
     setLoading(true);

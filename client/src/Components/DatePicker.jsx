@@ -72,6 +72,7 @@ const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
         className="border-none cursor-pointer bg-white text-black font-medium"
         disabledDate={disabledDate}
         renderExtraFooter={footer}
+        inputReadOnly
       />
     </>
   );
