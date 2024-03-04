@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../Context/userContext";
 import { Navigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -10,19 +10,17 @@ import BookingsPage from "./BookingsPage";
 import PlacesPages from "./PlacesPages";
 import Popover from "../Components/Popover";
 
-const Profile = () => {
+const ProfilePage = () => {
   const [redirect, setRedirect] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { user, ready, setUser } = useContext(UserContext);
-
-  if (ready && !user && !redirect) return <Navigate to={"/login"} />;
-
+  const { user, setUser } = useContext(UserContext);
+  
   let { subpage } = useParams();
   if (subpage === undefined) {
     subpage = "profile";
   }
-
-  if (!ready) return <Spinner width={200} height={200} />;
+  
+  if (ready && !user && !redirect) return <Navigate to={"/login"} />;
 
   const logout = async () => {
     setLoading(true);
@@ -125,4 +123,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

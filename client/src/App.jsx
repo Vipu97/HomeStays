@@ -6,7 +6,7 @@ import IndexPage from "./Pages/IndexPage";
 import RegisterPage from "./Pages/RegisterPage";
 import axios from "axios";
 import { UserContextProvider } from "./Context/userContext";
-import Profile from "./Pages/Profile";
+import ProfilePage from "./Pages/ProfilePage";
 import SinglePlacePage from "./Pages/SinglePlacePage";
 import AddPlacePage from "./Pages/AddPlacePage";
 import { Slide, ToastContainer, } from "react-toastify";
@@ -22,9 +22,9 @@ function App() {
             <Route index element={<IndexPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/account" element={<Profile />} />
-            <Route path="/account/:subpage" element={<Profile />} />
-            <Route path="/account/:subpage/:action" element={<Profile />} />
+            <Route path="/account" element={<ProfilePage />} />
+            <Route path="/account/:subpage" element={<ProfilePage />} />
+            <Route path="/account/:subpage/:action" element={<ProfilePage />} />
             <Route path="/account/places/new" element={<AddPlacePage />} />
             <Route path="/account/places/:id" element={<AddPlacePage />} />
             <Route path="/place/:id" element={<SinglePlacePage />} />

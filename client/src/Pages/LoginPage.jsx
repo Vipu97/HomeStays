@@ -21,15 +21,16 @@ const LoginPage = () => {
       setLoading(true);
       const { data } = await axios.post("/user/login", { email, password });
       setUser(data);
-      setRedirect(true);
     } catch (e) {
-      if (e.response.status == 422) toast.error("Wrong Password!!");
+      if (e.response.status == 422) 
+        toast.error("Wrong Password!!");
       else if (e.response.status == 404)
         toast.info("Email does not Exist.Go register first");
       else
         toast.info("Something Wrong happen at our end.Try after some moment");
     } finally {
       setLoading(false);
+      setRedirect(true);
     }
   };
   if (redirect)

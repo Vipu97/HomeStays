@@ -49,7 +49,7 @@ const Header = () => {
         </button>
       </div>
       <Link
-        to={user ? "/account" : "/login"}
+        to={user == null ? "/login" : "/account"}
         className="user-widget flex items-center py-2 px-4 gap-2 rounded-full border-gray-500 hover:scale-105 transition-all md:border">
         <svg
           xmlns="http://www.w3.org/2000/svg"
