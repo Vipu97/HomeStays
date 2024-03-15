@@ -10,6 +10,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     axios.get("/places").then(({ data }) => {
+      console.log(data);
       setAllPlaces(data);
       setLoading(false);
     });

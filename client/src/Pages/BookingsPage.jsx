@@ -15,6 +15,7 @@ const BookingsPage = () => {
       try {
         const { data } = await axios.get('/booking/account');
         setBookings(data);
+        console.log(bookings)
         setLoading(false);
       } catch (error) {
         console.log('Error: ', error);
@@ -31,19 +32,20 @@ const BookingsPage = () => {
       {(bookings && bookings.length > 0) ? (
         bookings.map(booking => (
           <Link
-            to={`/place/${booking.place}`}
-            className="flex gap-4 w-full bg-gray-200 rounded-2xl max-w-[650px] xs:gap-4 md:gap-1"
-            key = {bookings._id}
+            to={`/place/${booking.place._id}`}
+            className="flex gap-3 w-full bg-gray-200 rounded-2xl 
+            max-w-[650px] xs:gap-4 md:gap-1"
+            key = {booking._id}
           >
-            <div className="w-48 sm:w-64">
+            <div className="w-48 sm:w-64 h-full">
               <Image
                 src={booking.place.photos[0]}
                 alt="booking-perview-photo"
-                className="rounded-xl h-full w-full object-cover"
+                className="rounded-xl max-h-[120px] w-full object-cover xs:max-h-[130px] sm:max-h-[160px]"
               />
             </div>
             <div className="py-1 pr-2 md:ml-4">
-              <h2 className="text-[16px] font-semibold xs:text-[18px] sm:text-xl leading-5 sm:leading-6">{booking.place.title}</h2>
+              <h2 className="text-[15px] font-semibold xs:text-[18px] sm:text-xl leading-5 sm:leading-6">{booking.place.title}</h2>
               <div className="text-md sm:text-xl">
                 <BookingDates
                   booking={booking}

@@ -25,7 +25,6 @@ router.post('/register', async (req, res) => {
 })
 
 //route to handle user login
-
 router.post('/login',async (req,res) => {
     try{
         const {email,password} = req.body;
@@ -35,7 +34,7 @@ router.post('/login',async (req,res) => {
         const passOk =  bcrypt.compareSync(password, user.password);
         if(!passOk)
            return res.status(422).json("Wrong Password");
-        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, {}, (err, token) => {
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, {expiresIn : '24h'} , (err, token) => {
             if (err)
                 throw err;
             res.cookie('token', token).json(user);
