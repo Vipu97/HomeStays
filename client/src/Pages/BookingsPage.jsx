@@ -26,7 +26,7 @@ const BookingsPage = () => {
   },[]);
   
   if(loading)
-     return <Spinner width={200} height={200}/>
+     return <Spinner />
   return (
     <div className="flex flex-col justify-center items-center w-full px-2">
       {(bookings && bookings.length > 0) ? (

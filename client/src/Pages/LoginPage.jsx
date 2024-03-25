@@ -40,7 +40,7 @@ const LoginPage = () => {
   return (
     <div className="mt-10 pt-6 grow flex-col items-center">
       {loading ? (
-        <Spinner width={200} height={200} />
+        <Spinner />
       ) : (
         <>
           <h1 className="text-4xl text-center mb-4 font-bold">Login</h1>

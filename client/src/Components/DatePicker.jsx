@@ -69,7 +69,8 @@ const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
       <RangePicker
         placeholder={["CheckIn", "CheckOut"]}
         onChange={(dates) => updateDates(dates)}
-        className="border-none cursor-pointer bg-white text-black font-medium"
+        className="border-none cursor-pointer bg-white
+         text-black font-medium"
         disabledDate={disabledDate}
         renderExtraFooter={footer}
         inputReadOnly

@@ -45,12 +45,12 @@ export default function BookingWidget({ place }) {
       toast.warning("Login is required for booking");
       return setRedirect("/login");
     }
-    if(!checkIn || !checkOut)
-      toast.error("Sorry!! Place can't be available for the provided dates")
+    if (!checkIn || !checkOut)
+      toast.error("Sorry!! Place can't be available for the provided dates");
     try {
       const { data } = await axios.post("/booking", {
-        checkIn : formattedDate(checkIn),
-        checkOut : formattedDate(checkOut),
+        checkIn: formattedDate(checkIn),
+        checkOut: formattedDate(checkOut),
         numberOfGuests,
         name,
         phone,
@@ -61,7 +61,10 @@ export default function BookingWidget({ place }) {
         bookingId: data._id,
         bookedPlace: place._id,
       });
-      await axios.put(`/place/${place._id}`, { checkIn : formattedDate(checkIn), checkOut : formattedDate(checkOut)});
+      await axios.put(`/place/${place._id}`, {
+        checkIn: formattedDate(checkIn),
+        checkOut: formattedDate(checkOut),
+      });
       toast.success("Place Booked!!");
       navigate(`/account/bookings/${data._id}`);
     } catch (err) {

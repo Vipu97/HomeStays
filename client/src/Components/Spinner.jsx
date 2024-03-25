@@ -1,16 +1,10 @@
-import React from 'react';
-import {TailSpin} from 'react-loader-spinner'
+import React from "react";
+import { SpinnerCircular } from "spinners-react";
 
-const Spinner = ({height,width}) => {
+const Spinner = () => {
   return (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
-      <TailSpin
-        height={height}
-        width={width}
-        color="#f5385d"
-        radius="1"
-        visible={true}
-      />
+      <SpinnerCircular size={120} color={"#F5385D"} speed={90} secondaryColor="lightgray" />
     </div>
   );
 };

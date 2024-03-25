@@ -36,7 +36,7 @@ const SinglePlacePage = () => {
   return (
     <>
       {loading ? (
-        <Spinner height={200} width={200} />
+        <Spinner />
       ) : (
         <div className="mt-4 bg-gray-200 px-4 pt-3 rounded-3xl xs:px-8 xs:pt-8">
           <h1 className="text-3xl">{place.title}</h1>

@@ -10,7 +10,6 @@ const IndexPage = () => {
 
   useEffect(() => {
     axios.get("/places").then(({ data }) => {
-      console.log(data);
       setAllPlaces(data);
       setLoading(false);
     });
@@ -19,7 +18,7 @@ const IndexPage = () => {
   if(loading)
    return <Spinner width={200} height={200}/>;
   return (
-    <div className="grid grid-cols-1 justify-items-center py-4 px-6 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+    <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
       {allPlaces.length > 0 &&
         allPlaces.map((place) => {
           return (

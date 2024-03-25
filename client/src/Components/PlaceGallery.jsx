@@ -8,7 +8,7 @@ const PlaceGallery = ({ title, photos }) => {
       <div className="fixed inset-0 z-20 overflow-auto bg-white text-black font-semibold">
         <div className="bg-white p-8 grid gap-4 justify-center">
           <div>
-            <h2 className="text-3xl mr-36">Photos of {title}</h2>
+            <h2 className="text-2xl mr-0 mt-12 xs:mr-48 xs:mt-0 xs:text-[3xl]">Photos of {title}</h2>
             <button
               onClick={() => setShowAllPhotos(false)}
               className="fixed right-12 top-8 flex gap-1 py-2 px-4 rounded-2xl shadow shadow-black bg-white text-black hover:scale-105 transition-all"
@@ -77,7 +77,7 @@ const PlaceGallery = ({ title, photos }) => {
         </div>
       <button
         onClick={() => setShowAllPhotos(true)}
-        className="flex gap-1 absolute bottom-4 right-4 py-2 px-4 bg-white rounded-2xl shadow shadow-md shadow-gray-500 hover:scale-105 transition-all"
+        className="flex gap-1 absolute bottom-4 right-4 py-2 px-4 bg-white rounded-2xl shadow-md shadow-gray-500 hover:scale-105 transition-all"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

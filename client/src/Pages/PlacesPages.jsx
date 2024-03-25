@@ -56,7 +56,7 @@ const PlacesPages = () => {
         </div>
       )}
       {action === "new" && <AddPlacePage />}
-      {loading && <Spinner width={150} height={150} />}
+      {loading && <Spinner  />}
       {!loading &&
         places.length > 0 &&
         places.map((place) => {
