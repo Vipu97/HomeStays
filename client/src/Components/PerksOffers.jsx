@@ -2,7 +2,7 @@ import React from "react";
 
 const PerksOffers = ({perks}) => {
   return (
-    <div className="py-4 flex justify-between xs:justify-normal xs:gap-[100px] sm:gap-[200px]">
+    <div className="py-4 flex justify-between xs:justify-normal xs:gap-[100px] sm:justify-between sm:max-w-[500px] md:gap-[100px]">
       <div className="flex flex-col gap-4">
         <div className="flex gap-4">
           <svg

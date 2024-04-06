@@ -20,7 +20,7 @@ const IndexPage = () => {
   return (
     <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
       {allPlaces.length > 0 &&
-        allPlaces.map((place) => {
+        allPlaces?.map((place) => {
           return (
             <Link to={`/place/${place._id}`} key={place._id} className="w-full max-w-[400px] ">
               <div className="bg-gray-500 mb-2 rounded-2xl flex hover:scale-105 transition-all">

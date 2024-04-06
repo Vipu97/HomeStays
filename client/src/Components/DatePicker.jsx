@@ -35,7 +35,6 @@ const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
           "[]"
         )
     )
-    console.log(validDates)
     if (validDates) {
       // If the selected range includes disabled dates, handle it accordingly
       toast.error("Place is already booked by someone else for that particular period");

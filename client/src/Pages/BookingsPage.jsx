@@ -15,7 +15,6 @@ const BookingsPage = () => {
       try {
         const { data } = await axios.get('/booking/account');
         setBookings(data);
-        console.log(bookings)
         setLoading(false);
       } catch (error) {
         console.log('Error: ', error);
@@ -30,18 +29,18 @@ const BookingsPage = () => {
   return (
     <div className="flex flex-col justify-center items-center w-full px-2">
       {(bookings && bookings.length > 0) ? (
-        bookings.map(booking => (
+        bookings?.map(booking => (
           <Link
             to={`/place/${booking.place._id}`}
             className="flex gap-3 w-full bg-gray-200 rounded-2xl 
             max-w-[650px] xs:gap-4 md:gap-1"
             key = {booking._id}
           >
-            <div className="w-48 sm:w-64 h-full">
+            <div className="w-48 sm:w-64 h-32 xs:h-34 sm:h-40">
               <Image
                 src={booking.place.photos[0]}
                 alt="booking-perview-photo"
-                className="rounded-xl max-h-[120px] w-full object-cover xs:max-h-[130px] sm:max-h-[160px]"
+                className="rounded-xl h-full w-full"
               />
             </div>
             <div className="py-1 pr-2 md:ml-4">

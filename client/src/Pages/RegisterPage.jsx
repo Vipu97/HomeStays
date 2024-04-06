@@ -21,7 +21,7 @@ const RegisterPage = () => {
       toast.success("Registration Successfull");
       setRedirect("/login");
     } catch (error) {
-      if ((error.response.data.code = 11000))
+      if (error && error.response.data.code == 11000)
         toast.info("Email Already registered!!Try to Login");
       else
         toast.error(
