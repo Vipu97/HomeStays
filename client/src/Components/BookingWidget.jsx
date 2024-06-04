@@ -7,15 +7,17 @@ import DatePickerRange from "./DatePicker";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CancelBookingsWidget from "./CancelBookingsWidget";
+import Input from "react-phone-number-input/input";
+import 'react-phone-number-input/style.css';
 
 export default function BookingWidget({ place }) {
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
-  const [name, setName] = useState(null);
-  const [phone, setPhone] = useState(null);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [redirect, setRedirect] = useState(null);
-  const [bookingDetails, setBookingDetails] = useState(null);
+  const [bookingDetails, setBookingDetails] = useState("");
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -113,20 +115,22 @@ export default function BookingWidget({ place }) {
                   className="py-1 px-2 outline-none border rounded-md border-gray-300"
                   onChange={(ev) => setName(ev.target.value)}
                 />
-
                 <label>Phone number:</label>
-                <input
-                  type="tel"
+                <Input
+                  countries={"IN"}
+                  placeholder="Enter phone number"
                   value={phone}
+                  onChange={setPhone}
                   className="px-2 py-1 outline-none border rounded-md border-gray-300"
-                  onChange={(ev) => setPhone(ev.target.value)}
                 />
+                
               </div>
             )}
           </div>
           <button
             onClick={bookThisPlace}
-            className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl hover:scale-105 
+            className="px-4 py-2 bg-pink text-white font-semibold 
+            rounded-3xl hover:scale-105 
           transition-all my-5"
           >
             Book this place

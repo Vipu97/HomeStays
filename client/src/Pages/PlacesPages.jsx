@@ -33,7 +33,8 @@ const PlacesPages = () => {
       {action !== "new" && (
         <div className="text-center">
           <Link
-            className="bg-pink text-white rounded-full inline-flex py-2 px-6 mb-4 border-gray-100 
+            className="bg-pink text-white rounded-full inline-flex py-2 
+            px-6 mb-4 border-gray-100 
             font-semibold text-xl items-center hover:scale-105 transition-all"
             to={"/account/places/new"}
           >
@@ -68,7 +69,7 @@ const PlacesPages = () => {
                   <Image
                     src={place.photos[0]}
                     alt="preview-photo"
-                    className="w-full rounded-xl h-full object-cover"
+                    className="rounded-xl object-cover w-full h-full"
                   />
                 </div>
                 <div>

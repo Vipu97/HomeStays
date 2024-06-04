@@ -11,7 +11,7 @@ const PlaceGallery = ({ title, photos }) => {
             <h2 className="text-2xl mr-0 mt-12 xs:mr-48 xs:mt-0 xs:text-[3xl]">Photos of {title}</h2>
             <button
               onClick={() => setShowAllPhotos(false)}
-              className="fixed right-12 top-8 flex gap-1 py-2 px-4 rounded-2xl shadow shadow-black bg-white text-black hover:scale-105 transition-all"
+              className="fixed right-12 top-8 flex gap-1 py-2 px-4 rounded-2xl shadow shadow-black bg-white text-black hover:scale-105 transition-all z-10"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
