@@ -1,15 +1,22 @@
-import React from 'react'
-import Header from './Header'
-import { Outlet } from 'react-router-dom'
+import React, { useState } from "react";
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
 const Layout = () => {
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleQueryChange = (e) => {
+    setSearchInput(e.target.value);
+  };
   return (
     <div>
-        <Header />
-        <Outlet />
-
+      <Header
+        searchInput={searchInput}
+        handleQueryChange={handleQueryChange}
+      />
+      <Outlet context={{ searchInput}} />
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
