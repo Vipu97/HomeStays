@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState,useRef } from "react";
 import Perks from "../Components/Perks";
 import PhotosUploader from "../Components/PhotosUploader";
 import axios from "axios";
@@ -48,7 +48,8 @@ const AddPlacePage = () => {
   const [perks, setPerks] = useState([]);
   const [extraInfo, setExtraInfo] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
-  const [price,setPrice] = useState();
+  const [price,setPrice] = useState("");
+  const descRef = useRef();
   
   useEffect(() => {
     if (id) {
@@ -69,6 +70,11 @@ const AddPlacePage = () => {
     try {
       if (addedPhotos.length < 3) {
         toast.info("Upload atleast 3 photos for your place");
+        return;
+      }
+      if(description.split(" ").length <= 50){
+        descRef.current.focus();
+        toast.info("Description should contain at least 50 words");
         return;
       }
       const data = { title, address, addedPhotos, description,
@@ -129,32 +135,33 @@ const AddPlacePage = () => {
       />
 
       <InputHeading text={"Description"} />
-      <InputDesc text={"Description of the place"} isRequired={true} />
+      <InputDesc text={"Description of the place (should be of atleast 50 words)"} isRequired={true} />
       <textarea
         rows={5}
-        className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4"
+        className="w-full rounded-xl py-1.5 px-4 border border-gray-300
+        mb-4"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        ref={descRef}
         required
       />
 
       <label className="font-semibold text-2xl">Perks</label>
-      <InputDesc text={"Select all the perks of your place"} />
+      <InputDesc text={"Select all the perks of your place (If any)"} />
       <Perks perks={perks} setPerks={setPerks} />
 
       <InputHeading text={"Extra Info"} />
-      <InputDesc text={"house rules, etc"} />
+      <InputDesc text={"house rules, etc (optional)"} />
       <textarea
         rows={5}
         className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4"
         value={extraInfo}
         onChange={(e) => setExtraInfo(e.target.value)}
-        required
       />
-      <div className="flex flex-col w-full gap-x-16 md:flex-row">
+      <div className="flex flex-col mt-4 w-full gap-x-16 md:flex-row">
         <div className="w-full md:w-1/2">
-          <h3 className="mt-2 mb-1 font-semibold text-xl">Maximum guests</h3>
-          <p className="text-sm font-medium text-gray-500 mb-2">Maximum capacity of place for staying of guests at a same time</p>
+          <InputHeading text={'Maximum guests'}/>
+          <InputDesc text={'Maximum capacity of place for staying of guests at a same time'} isRequired={false} />
           <input
             type="number"
             className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4"
@@ -164,15 +171,17 @@ const AddPlacePage = () => {
           />
         </div>
         <div className="w-full md:w-1/2">
-            <h3 className="mt-2 mb-1 font-semibold text-xl">Price per night</h3>
-            <p className="text-sm font-medium text-gray-500 mb-2">Try to give reasonable price considering all the factors.(in Rupees)</p>
-            <input type="number" value={price} 
+            {/* <h3 className="mt-2 mb-1 font-semibold text-xl">Price per night</h3> */}
+            <InputHeading text={'Price per night'}/>
+            <InputDesc text={'Try to give reasonable price considering all the factors.(in INR)'} isRequired={true}/>
+            <input type="number" value={price} required
             className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4"
             onChange={ev => setPrice(ev.target.value)}/>
         </div>
       </div>
       <button
-        className="bg-pink w-full rounded-2xl text-white py-2 font-semibold text-xl mt-3 mb-5 hover:scale-95 transition-all" onClick={(e) => addNewPlace} >
+        className="bg-pink w-full rounded-2xl text-white py-2 
+        font-semibold text-xl mt-3 mb-5 hover:scale-95 transition-all" onClick={(e) => addNewPlace} >
         Save Your Place
       </button>
     </form>

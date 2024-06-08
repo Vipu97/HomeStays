@@ -12,7 +12,7 @@ const isLoggedIn = async (req,res,next) => {
         }
         jwt.verify(token,jwtSecret,{},async (err,user) => {
             if(err)
-               return res.status(401).json({message : "Unauthorized"})
+               return res.status(401).json({message : "Unauthorized"});
             req.user = user;
             next();
         })

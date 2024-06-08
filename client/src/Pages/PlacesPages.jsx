@@ -65,14 +65,14 @@ const PlacesPages = () => {
             <div className="w-full bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto" 
             key={place._id}>
               <div className="flex flex-col gap-2 cursor-pointer sm:flex-row sm:gap-5 items-center">
-                <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto grow shrink-0 sm:w-[200px] md:h-32">
+                <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto shrink-0 sm:w-[200px] md:h-32">
                   <Image
                     src={place.photos[0]}
                     alt="preview-photo"
                     className="rounded-xl object-cover w-full h-full"
                   />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h2 className="font-semibold text-[18px] text-center mb-2">{place.title}</h2>
                   <p className="text-sm hidden sm:inline-block">
                     {place.description.substr(0, 300)}

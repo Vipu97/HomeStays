@@ -32,7 +32,7 @@ router.post('/upload', photosMiddleware.array('photos',50) ,async (req, res) => 
         const url = await uploadToS3(path,originalname,mimetype);
         uploadedFiles.push(url);
     }
-    res.json(uploadedFiles)
+    res.json(uploadedFiles);
 })
 
 router.post('/upload_by_link', async (req,res) => {

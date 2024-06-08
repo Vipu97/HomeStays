@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import Image from "./Image";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => {
+  const inputRef = useRef();
+
   const addPhotoLink = async (e) => {
     e.preventDefault();
+    if(photoLink.length === 0){
+      inputRef.current.focus();
+      toast.warning("link to a image required");
+      return;
+    }
     const { data } = await axios.post("/upload_by_link", {
       imgLink: photoLink,
     });
@@ -32,10 +41,12 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
         console.error("Error uploading photos:", error);
       });
   };
+
   const removePhoto = (ev,fileName) => {
     ev.preventDefault();
     setAddedPhotos(addedPhotos.filter(file => file !== fileName));
   };
+
   const setAsMainPhoto = (ev,fileName) => {
     ev.preventDefault();
     const remainingPhotos = addedPhotos.filter(file => file !== fileName);
@@ -48,13 +59,15 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
         <input
           type="text"
           placeholder="Add using a link ... jpg"
-          className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4"
+          className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4 outline-1 outline-pink"
           value={photoLink}
           onChange={(e) => setPhotoLink(e.target.value)}
           required = {addedPhotos.length === 0}
+          ref={inputRef}
         />
         <button
-          className="bg-pink text-white w-32 h-10 rounded-2xl font-semibold"
+          className="bg-pink text-white w-32 h-10 rounded-2xl 
+          font-semibold"
           onClick={(e) => addPhotoLink(e)}
         >
           Add Photo
@@ -67,7 +80,7 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
               <Image
                 src={link}
                 alt="uploaded-image-link"
-                className="rounded-xl w-full object-cover"
+                className="rounded-xl w-full object-cover h-full"
               />
               <button
                 className="absolute right-2 top-1 cursor-pointer bg-black p-1 rounded-md opacity-60"

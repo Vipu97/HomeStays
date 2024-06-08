@@ -2,6 +2,7 @@ const {S3Client, PutObjectCommand} = require('@aws-sdk/client-s3');
 const bucket = process.env.BUCKET_NAME;
 const fs = require('fs');
 
+
 const uploadToS3 = async (path,originalFileName,mimetype) => {
     const client = new S3Client({
         region:'eu-north-1',
