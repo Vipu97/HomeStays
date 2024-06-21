@@ -1,10 +1,10 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import { User } from "../models/User.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { isLoggedIn } from "../middlewares/userAuth.js";
 const jwtSecret = process.env.JWT_SECRET;
-const bcrypt = require('bcryptjs');
-const isLoggedIn = require('../middlewares/userAuth');
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
@@ -119,4 +119,4 @@ router.delete('/bookings', isLoggedIn, async(req,res) => {
     }
 })
 
-module.exports = router;
+export default router;

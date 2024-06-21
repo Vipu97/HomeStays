@@ -1,11 +1,10 @@
-const {S3Client, PutObjectCommand} = require('@aws-sdk/client-s3');
+import {S3Client,PutObjectCommand} from "@aws-sdk/client-s3"
 const bucket = process.env.BUCKET_NAME;
-const fs = require('fs');
+import fs from "fs";
 
-
-const uploadToS3 = async (path,originalFileName,mimetype) => {
+export const uploadToS3 = async (path,originalFileName,mimetype) => {
     const client = new S3Client({
-        region:'eu-north-1',
+        region:'ap-south-1',
         credentials:{
             accessKeyId:process.env.S3_ACCESS_KEY,
             secretAccessKey:process.env.S3_SECRET_ACCESS_KEY
@@ -27,5 +26,3 @@ const uploadToS3 = async (path,originalFileName,mimetype) => {
         throw err;
     }
 }
-
-module.exports = uploadToS3;

@@ -1,7 +1,7 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const Booking = require('../models/Booking')
-const isLoggedIn = require('../middlewares/userAuth');
+import {Booking} from "../models/Booking.js";
+import {isLoggedIn} from "../middlewares/userAuth.js";
 
 //route to create a new booking
 router.post('/', isLoggedIn ,async (req,res) => {
@@ -49,4 +49,4 @@ router.delete('/',isLoggedIn,async (req,res) => {
     }
 })
 
-module.exports = router;
+export default router;

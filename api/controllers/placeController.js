@@ -1,8 +1,8 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const Place = require('../models/Place');
-const allDaysBetweenIntervals = require('../utils/allDays');
-const isLoggedIn = require('../middlewares/userAuth');
+import {Place} from "../models/Place.js";
+import {allDaysBetweenIntervals} from "../utils/allDays.js";
+import {isLoggedIn} from "../middlewares/userAuth.js";
 
 //route to add place
 router.post('/', isLoggedIn, async (req, res) => {
@@ -91,4 +91,4 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-module.exports = router;
+export default router;

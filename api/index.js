@@ -1,8 +1,9 @@
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const connectWithDB = require('./config/db');
-const dotenv = require('dotenv');
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import {connectWithDB} from "./config/db.js";
+import dotenv from "dotenv";
+import router from "./routes/index.js";
 
 const app = express();
 
@@ -19,7 +20,7 @@ app.use(cookieParser());
 
 connectWithDB();
 
-app.use("", require('./routes'));
+app.use("", router);
 
 app.listen(PORT, (err) => {
     if(err)

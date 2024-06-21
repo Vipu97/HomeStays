@@ -1,13 +1,13 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const userController = require('../controllers/userController');
-const placeController = require('../controllers/placeController');
-const bookingController = require('../controllers/bookingController');
-const Place = require('../models/Place');
-const imageDownload = require('image-downloader');
-const multer = require('multer')
-const mime = require('mime-types');
-const uploadToS3 = require('../utils/uploadToS3');
+import userController from "../controllers/userController.js";
+import placeController from "../controllers/placeController.js"
+import bookingController from "../controllers/bookingController.js";
+import {Place} from "../models/Place.js";
+import imageDownload from "image-downloader";
+import multer from "multer";
+import mime from "mime-types";
+import {uploadToS3} from "../utils/uploadToS3.js";
 
 router.use('/user',userController);
 router.use('/place',placeController);
@@ -50,4 +50,4 @@ router.post('/upload_by_link', async (req,res) => {
     }
 });
 
-module.exports = router;
+export default router;

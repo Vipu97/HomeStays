@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
 const placeSchema = new mongoose.Schema({
     owner : {type:mongoose.Schema.Types.ObjectId, ref:'User'},
@@ -13,6 +13,5 @@ const placeSchema = new mongoose.Schema({
     bookedDates : [String],
 })
 
-const Place = mongoose.model('Place',placeSchema);
+export const Place = mongoose.model('Place',placeSchema);
 
-module.exports = Place;

@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 const jwtSecret = process.env.JWT_SECRET;
 
-const isLoggedIn = async (req,res,next) => {
+export const isLoggedIn = async (req,res,next) => {
     try{
         const {token} = req.cookies;
         if(!token){
@@ -21,5 +21,3 @@ const isLoggedIn = async (req,res,next) => {
         res.json(500).json("Internal Server Error");
     }
 }
-
-module.exports = isLoggedIn;
