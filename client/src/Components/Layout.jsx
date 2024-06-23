@@ -4,10 +4,10 @@ import { Outlet } from "react-router-dom";
 
 const Layout = () => {
   const [searchInput, setSearchInput] = useState("");
-
   const handleQueryChange = (e) => {
     setSearchInput(e.target.value);
   };
+  
   return (
     <div>
       <Header

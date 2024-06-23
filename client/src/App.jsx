@@ -16,7 +16,7 @@ axios.defaults.withCredentials = true;
 
 function App() {
   return (
-      <UserContextProvider>
+    <UserContextProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<IndexPage />} />
@@ -30,18 +30,20 @@ function App() {
             <Route path="/place/:id" element={<SinglePlacePage />} />
           </Route>
         </Routes>
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          transition = {Slide}
-        />
-      </UserContextProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        transition={Slide}
+        limit={3}
+        
+      />
+    </UserContextProvider>
   );
 }
 

@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { UserContext } from "../Context/userContext";
 
-const Header = ({searchInput,handleQueryChange}) => {
+const Header = ({ searchInput, handleQueryChange }) => {
   const { user } = useContext(UserContext);
+  const { pathname } = useLocation();
 
   return (
-    <header className="py-5 flex justify-between xs:px-2 sm:px-4 lg:px-18 flex-wrap xs:flex-nowrap gap-y-3 gap-x-3">
+    <header className="py-5 flex justify-between xs:px-2 sm:px-4 lg:px-18 flex-wrap sm:flex-nowrap gap-y-3 gap-x-3">
       <div className="logo order-0 pl-3">
         <Link
           to="/"
@@ -26,40 +27,26 @@ const Header = ({searchInput,handleQueryChange}) => {
               d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
             />
           </svg>
-          <span className="font-bold text-xl text-pink xs:block xs:text-2xl">
+          <span className="font-bold text-xl text-pink xs:text-2xl">
             HomeStays
           </span>
         </Link>
       </div>
-      <div className="order-2 xs:order-1 flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-md shadow-gray-300 sm:gap-3 sm:flex sm:px-4 w-full max-w-[400px] lg:max-w-[500px] justify-between h-11 xs:h-auto mx-4 xxs:mx-auto">
-        <input
-          type="text"
-          placeholder="Search by any title or location"
-          className="outline-none w-full pl-2"
-          value={searchInput}
-          onChange={handleQueryChange}
+      {
+        pathname === "/" &&
+        <div className="order-2 sm:order-1 flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-md
+       shadow-gray-300 sm:gap-3 sm:flex sm:px-4 w-full max-w-[400px] lg:max-w-[500px] justify-between h-11 xs:h-auto mx-4 xxs:mx-auto">
+          <input
+            type="text"
+            placeholder="Search by any title or location"
+            className="outline-none w-full pl-2 h-11"
+            value={searchInput}
+            onChange={handleQueryChange}
 
-        />
-        <button
-          className="bg-pink border rounded-full p-2 hover:scale-110 transition-all"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-4 h-4 text-white font-bold"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="xs:order-2">
+          />
+        </div>
+      }
+      <div className="sm:order-2">
         <Link
           to={user == null ? "/login" : "/account"}
           className="user-widget flex items-center py-2 px-4 gap-2 rounded-full border-gray-500 hover:scale-105 transition-all md:border"

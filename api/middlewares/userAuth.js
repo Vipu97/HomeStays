@@ -1,4 +1,7 @@
 import jwt from "jsonwebtoken";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 const jwtSecret = process.env.JWT_SECRET;
 
 export const isLoggedIn = async (req,res,next) => {

@@ -7,32 +7,45 @@ import PerksOffers from "../Components/PerksOffers";
 import { UserContext } from "../Context/userContext";
 import BookingWidget from "../Components/BookingWidget";
 import Spinner from "../Components/Spinner";
+import NoPlaceFound from "../Components/NoPlaceFound";
 
 const SinglePlacePage = () => {
-  const [place, setPlace] = useState(null);
+  const [place, setPlace] = useState([]);
   const [alreadyBooked, setAlreadyBooked] = useState(false);
   const [showFullExtraInfo, setShowFullExtraInfo] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const { user } = useContext(UserContext);
 
-  useEffect(() => {
-    const fetchPlaceDetails = async () => {
+  const fetchPlaceDetails = async () => {
+    try {
       const { data } = await axios.get(`/place/${id}`);
       setPlace(data);
-      setLoading(false);
-    };
-    //function to check whether current place is already booked by user
-    const fetchUserDetails = async () => {
-      const { data } = await axios.get(`/user`);
-      data.bookedPlaces.includes(id) && setAlreadyBooked(true);
-      setLoading(false);
-    };
+    } catch (err) {
+      console.log(err.response.status);
+    }
+    setLoading(false);
+  };
+
+  //function to check whether current place is already booked by user
+  const fetchUserDetails = async () => {
+    const { data } = await axios.get(`/user`);
+    data.bookedPlaces.includes(id) && setAlreadyBooked(true);
+    setLoading(false);
+  };
+  useEffect(() => {
     fetchPlaceDetails();
     if (user) fetchUserDetails();
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, 2000);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!loading && !place) return;
+
+  if (!loading && place.length === 0 && shouldRender)
+    return <NoPlaceFound />;
   return (
     <>
       {loading ? (
@@ -45,7 +58,8 @@ const SinglePlacePage = () => {
           <div className="mt-8 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
             <div>
               <div>
-                <h2 className="font-semibold text-2xl mb-1">Description</h2>
+                <h2 className="font-semibold text-2xl mb-1">
+                  Description</h2>
                 {place.description}
               </div>
               <h2 className="font-semibold text-[17px] mt-4">
@@ -68,9 +82,9 @@ const SinglePlacePage = () => {
             <div>
               <h2 className="font-semibold text-2xl">Extra info</h2>
             </div>
-            <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5">
+            <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5 max-w-[100vw] flex">
               {showFullExtraInfo ? (
-                <p>
+                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black" style={{fontFamily:"inherit"}}>
                   {place.extraInfo}
                   <span
                     className="text-pink cursor-pointer font-semibold"
@@ -78,17 +92,21 @@ const SinglePlacePage = () => {
                   >
                     ...show less
                   </span>
-                </p>
+
+                </pre>
               ) : (
-                <p>
-                  {place.extraInfo.substring(0, 600)}
-                  <span
-                    className="text-pink cursor-pointer font-semibold"
-                    onClick={() => setShowFullExtraInfo(true)}
-                  >
-                    ..show more
-                  </span>
-                </p>
+                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black"
+                style={{fontFamily:"inherit"}}>
+                  {place.extraInfo?.substring(0, 1000)}
+                  {place.extraInfo?.length > 1000 &&
+                    <span
+                      className="text-pink cursor-pointer font-semibold"
+                      onClick={() => setShowFullExtraInfo(true)}
+                    >
+                      ..show more
+                    </span>
+                  }
+                </pre>
               )}
             </div>
           </div>

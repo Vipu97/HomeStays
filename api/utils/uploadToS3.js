@@ -23,6 +23,7 @@ export const uploadToS3 = async (path,originalFileName,mimetype) => {
         }))
         return `https://${bucket}.s3.amazonaws.com/${newFileName}`;
     }catch(err){
+        console.log(err);
         throw err;
     }
 }

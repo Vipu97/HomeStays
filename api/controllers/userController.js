@@ -4,10 +4,13 @@ import { User } from "../models/User.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { isLoggedIn } from "../middlewares/userAuth.js";
+import { generateRandomPassword } from "../utils/generatePassword.js";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 const jwtSecret = process.env.JWT_SECRET;
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-
 
 //route to handle new registration for user.
 router.post('/register', async (req, res) => {
@@ -18,31 +21,31 @@ router.post('/register', async (req, res) => {
             email,
             password: bcrypt.hashSync(password, bcryptSalt),
         })
-        res.json(newUser)
+        res.status(201).json(newUser)
     } catch (e) {
         res.status(422).json(e);
     }
 })
 
 //route to handle user login
-router.post('/login',async (req,res) => {
-    try{
-        const {email,password} = req.body;
-        const user = await User.findOne({email});
-        if(!user)
-           return res.status(404).json("User Not Exist");
-        const passOk =  bcrypt.compareSync(password, user.password);
-        if(!passOk)
-           return res.status(422).json("Wrong Password");
-        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, {expiresIn : '24h'} , (err, token) => {
+router.post('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user)
+            return res.status(404).json("User Not Exist");
+        const passOk = bcrypt.compareSync(password, user.password);
+        if (!passOk)
+            return res.status(422).json("Wrong Password");
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
             res.cookie('token', token).json(user);
         });
-    }catch(err){
+    } catch (err) {
         res.status(500).json({
-            message : "Internal Server Error",
-            error : err.message
+            message: "Internal Server Error",
+            error: err.message
         });
     }
 })
@@ -53,17 +56,17 @@ router.post('/logout', async (req, res) => {
 
 
 //route to update user name or password
-router.put('/',isLoggedIn,async(req,res) => {
-    try{
-        const {newName,newPassword} = req.body;
+router.put('/', isLoggedIn, async (req, res) => {
+    try {
+        const { newName, newPassword } = req.body;
         const userId = req.user.id;
         const newAttributes = {
-            name : newName,
-            password : bcrypt.hashSync(newPassword, bcryptSalt)
+            name: newName,
+            password: bcrypt.hashSync(newPassword, bcryptSalt)
         }
-        const updatedUser = await User.findByIdAndUpdate(userId,{$set : newAttributes});
+        const updatedUser = await User.findByIdAndUpdate(userId, { $set: newAttributes });
         res.status(200).json(updatedUser);
-    }catch(err){
+    } catch (err) {
         res.status(500).json(err.message);
     }
 })
@@ -84,39 +87,61 @@ router.get('/', isLoggedIn, async (req, res) => {
 });
 
 //route to get data for user profile
-router.get('/profile', isLoggedIn , (req,res) =>{
+router.get('/profile', isLoggedIn, (req, res) => {
     res.json(req.user);
 })
 
 //route to update add bookings and bookedPlaces data inside user on a booking.
-router.put('/bookings', isLoggedIn , async (req,res) => {
-    try{
-        const {bookingId,bookedPlace} = req.body;
+router.put('/bookings', isLoggedIn, async (req, res) => {
+    try {
+        const { bookingId, bookedPlace } = req.body;
         const userId = req.user.id;
-        const {bookings,bookedPlaces} = await User.findById(userId);
+        const { bookings, bookedPlaces } = await User.findById(userId);
         const updatedAttributes = {
-            bookings : [...bookings,bookingId],
-            bookedPlaces : [...bookedPlaces,bookedPlace]
+            bookings: [...bookings, bookingId],
+            bookedPlaces: [...bookedPlaces, bookedPlace]
         }
-        const updatedUser = await User.findByIdAndUpdate(userId,{$set : updatedAttributes});
+        const updatedUser = await User.findByIdAndUpdate(userId, { $set: updatedAttributes });
         res.status(200).json(updatedUser);
-    }catch(err){
+    } catch (err) {
         res.status(500).json(err.message);
     }
 })
 //routes to delete any booking details from the user 
-router.delete('/bookings', isLoggedIn, async(req,res) => {
-    try{
-        const {placeId,bookingId} = req.body;
+router.delete('/bookings', isLoggedIn, async (req, res) => {
+    try {
+        const { placeId, bookingId } = req.body;
         const userId = req.user.id;
-        const {bookedPlaces,bookings} = await User.findById(userId);
+        const { bookedPlaces, bookings } = await User.findById(userId);
         const updatedBookedPlaces = bookedPlaces.filter(id => id.toString() !== placeId);
         const updatedBookings = bookings.filter(id => id.toString() !== bookingId);
-        await User.findByIdAndUpdate(userId , {$set : {bookedPlaces : updatedBookedPlaces , bookings : updatedBookings}})
+        await User.findByIdAndUpdate(userId, { $set: { bookedPlaces: updatedBookedPlaces, bookings: updatedBookings } })
         res.status(200).json("User Bookings Update Successfully");
-    }catch(e){
+    } catch (e) {
         res.status(500).json(e.message);
     }
 })
 
+//route to logged in user with google
+router.post("/auth", async (req, res) => {
+    try {
+        const { email, name } = req.body;
+        let user = await User.findOne({ email });
+        if (user == null) {
+            const password = generateRandomPassword();
+            user = await User.create({
+                name,
+                email,
+                password: bcrypt.hashSync(password, bcryptSalt),
+            })
+        }
+        jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
+            if (err)
+                throw err;
+            res.cookie('token', token).json(user);
+        });
+    } catch (err) {
+        res.status(500).json(err.message);
+    }
+})
 export default router;

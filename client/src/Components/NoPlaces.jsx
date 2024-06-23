@@ -22,7 +22,8 @@ const NoPlaces = () => {
         <h3 className="pt-1 xs:pt-4 text-xl xs:text-2xl font-semibold">
           Sorry, no matches found. Try adjusting your search.
         </h3>
-        <p className="hidden xs:block text-pink font-semibold">Time to dust off your bags and start planning your next adventure</p>
+        <p className="hidden xs:block text-pink font-semibold">
+          Time to dust off your bags and start planning your next adventure</p>
       </div>
     </div>
   );

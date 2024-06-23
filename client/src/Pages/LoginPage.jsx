@@ -5,6 +5,8 @@ import { UserContext } from "../Context/userContext";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../Components/Spinner";
+import { GoogleLogin } from "@react-oauth/google";
+import {parseJwt} from "../utils/helper";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,7 +16,7 @@ const LoginPage = () => {
   const { setUser } = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -22,7 +24,7 @@ const LoginPage = () => {
       const { data } = await axios.post("/user/login", { email, password });
       setUser(data);
     } catch (e) {
-      if (e.response.status == 422) 
+      if (e.response.status == 422)
         toast.error("Wrong Password!!");
       else if (e.response.status == 404)
         toast.info("Email does not Exist.Go register first");
@@ -35,10 +37,26 @@ const LoginPage = () => {
   };
   if (redirect)
     location.state
-      ? navigate(location.state.prevPath,{state: {prevPath:'login'}})
+      ? navigate(location.state.prevPath, { state: { prevPath: 'login' } })
       : navigate("/");
+
+  async function onGoogleLoginSuccess(response) {
+    try{
+      const {credential} = response;
+      const {email,name} = parseJwt(credential);
+      const {data} = await axios.post(`/user/auth` , {email,name});
+      setUser(data);
+      navigate("/");
+    }catch(err){
+      console.error(err.message);
+    }
+  }
+  function onGoogleLoginError(error) {
+    console.log(error);
+    return toast.error("Erorr while logging with google");
+  }
   return (
-    <div className="mt-10 pt-6 grow flex-col items-center">
+    <div className="mt-6 pt-6 grow flex-col items-center">
       {loading ? (
         <Spinner />
       ) : (
@@ -61,16 +79,19 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button className="bg-pink p-2 w-[90%] text-white rounded-2xl mt-1 hover:scale-95 
+            <button className="bg-pink p-2 w-[90%] text-white 
+            rounded-2xl mt-1 hover:scale-95 font-semibold
             transition-all xs:w-[400px]">
               Login
             </button>
             <div className="text-center mt-1">
-              Didn't have an account yet?
-              <Link to={"/register"} className="text-pink underline">
+              Didn't have an account yet?{" "}
+              <Link to={"/register"} className="text-pink underline font-medium">
                 Register now
               </Link>
             </div>
+            <div className="text-gray-500 my-3">OR</div>
+            <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginError} />
           </form>
         </>
       )}

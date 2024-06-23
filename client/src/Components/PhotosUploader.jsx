@@ -1,15 +1,15 @@
 import React, { useRef } from "react";
 import axios from "axios";
 import Image from "./Image";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => {
+const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }) => {
   const inputRef = useRef();
 
   const addPhotoLink = async (e) => {
     e.preventDefault();
-    if(photoLink.length === 0){
+    if (photoLink.length === 0) {
       inputRef.current.focus();
       toast.warning("link to a image required");
       return;
@@ -21,36 +21,53 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
     setPhotoLink("");
   };
 
-  const uploadPhoto = (e) => {
+  const handleFileChange = (e) => {
     const files = e.target.files;
-    const data = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      data.append("photos", files[i]);
-    }
-    axios
-      .post("/upload", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        const { data: filenames } = response;
+    toast.promise(
+      uploadPhoto(files).then((filenames) => {
         setAddedPhotos((prev) => [...prev, ...filenames]);
-      })
-      .catch((error) => {
-        console.error("Error uploading photos:", error);
-      });
+      }),
+      {
+        pending: 'Uploading Photo',
+        success: 'Uploaded Successfully!',
+        error: 'Error while uploading',
+      }
+    );
   };
 
-  const removePhoto = (ev,fileName) => {
+  const uploadPhoto = (files) => {
+    return new Promise((resolve, reject) => {
+      const data = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        data.append("photos", files[i]);
+      }
+      axios
+        .post("/upload", data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          const { data: filenames } = response;
+          resolve(filenames);
+        })
+        .catch((error) => {
+          console.error("Error uploading photos:", error);
+          reject(error);
+        });
+
+    }
+  )};
+
+  const removePhoto = (ev, fileName) => {
     ev.preventDefault();
     setAddedPhotos(addedPhotos.filter(file => file !== fileName));
   };
 
-  const setAsMainPhoto = (ev,fileName) => {
+  const setAsMainPhoto = (ev, fileName) => {
     ev.preventDefault();
     const remainingPhotos = addedPhotos.filter(file => file !== fileName);
-    const newOrder = [fileName,...remainingPhotos];
+    const newOrder = [fileName, ...remainingPhotos];
     setAddedPhotos(newOrder);
   };
   return (
@@ -62,7 +79,7 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
           className="w-full rounded-xl py-1.5 px-4 border border-gray-300 mb-4 outline-1 outline-pink"
           value={photoLink}
           onChange={(e) => setPhotoLink(e.target.value)}
-          required = {addedPhotos.length === 0}
+          required={addedPhotos.length === 0}
           ref={inputRef}
         />
         <button
@@ -84,7 +101,7 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
               />
               <button
                 className="absolute right-2 top-1 cursor-pointer bg-black p-1 rounded-md opacity-60"
-                onClick={(ev) => removePhoto(ev,link)}
+                onClick={(ev) => removePhoto(ev, link)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -101,36 +118,36 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
                   />
                 </svg>
               </button>
-              <button className="absolute top-1 left-1 bg-black p-1 opacity-60 rounded-md" onClick={(ev) => setAsMainPhoto(ev,link)}>
-                { link !== addedPhotos[0] ?
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="white"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="white"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                  />
-                </svg>:
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="red"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="white"
-                  className="w-7 h-7"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
-                  />
-                </svg>}
+              <button className="absolute top-1 left-1 bg-black p-1 opacity-60 rounded-md" onClick={(ev) => setAsMainPhoto(ev, link)}>
+                {link !== addedPhotos[0] ?
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="white"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="white"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                    />
+                  </svg> :
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="red"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="white"
+                    className="w-7 h-7"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"
+                    />
+                  </svg>}
               </button>
             </div>
           ))}
@@ -139,7 +156,8 @@ const PhotosUploader = ({photoLink,setPhotoLink,addedPhotos,setAddedPhotos}) => 
             type="file"
             className="hidden"
             multiple
-            onChange={uploadPhoto}
+            onChange={(e) => handleFileChange(e)}
+            accept="image/*"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"

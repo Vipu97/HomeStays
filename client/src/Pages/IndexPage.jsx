@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Link,
-  useLocation,
-  useOutlet,
   useOutletContext,
 } from "react-router-dom";
 import Spinner from "../Components/Spinner";
@@ -52,7 +50,7 @@ const IndexPage = () => {
       );
     });
     filterPlaces();
-  },[searchInput, originalPlaces]);
+  },[searchInput,originalPlaces]);
 
   if (loading) return <Spinner width={200} height={200} />;
   if(allPlaces.length === 0){
@@ -66,11 +64,11 @@ const IndexPage = () => {
             <Link
               to={`/place/${place._id}`}
               key={place._id}
-              className="w-full max-w-[400px] "
+              className="w-full max-w-[400px] xs:max-w-[450px] "
             >
               <div className="bg-gray-500 mb-2 rounded-2xl flex hover:scale-105 transition-all">
                 <Image
-                  className="rounded-2xl h-[220px] w-[100%] xs:h-[250px] sm:h-[280px]"
+                  className="rounded-2xl h-[220px] w-[100%] xs:h-[250px] sm:h-[280px] aspect-auto"
                   src={place.photos?.[0]}
                   alt="place-main-photo"
                 />
