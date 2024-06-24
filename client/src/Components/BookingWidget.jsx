@@ -28,7 +28,7 @@ export default function BookingWidget({ place }) {
       setBookingDetails(data);
     };
     if (user) fetchBookingDetails();
-  }, []);
+  }, [user,place]);
 
   let numberOfNights = 0;
   if (checkIn && checkOut) {
@@ -87,7 +87,7 @@ export default function BookingWidget({ place }) {
       ) : (
         <div className="bg-white shadow py-4 rounded-2xl flex flex-col justify-center items-center min-w-[280px]">
           <div className="text-2xl text-center">
-            Price: {`₹${place.price.toLocaleString("en-IN")}`} per night
+            Price: {`₹${place.price?.toLocaleString("en-IN")}`} per night
           </div>
           <div className="border rounded-md mt-4">
             <div className="flex justify-center py-1">

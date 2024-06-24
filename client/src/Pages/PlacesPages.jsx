@@ -4,6 +4,7 @@ import AddPlacePage from "./AddPlacePage";
 import axios from "axios";
 import Spinner from "../Components/Spinner";
 import Image from "../Components/Image";
+import NoPlaceAdded from "../Components/NoPlaceAdded";
 
 const PlacesPages = () => {
   const { action } = useParams();
@@ -59,8 +60,9 @@ const PlacesPages = () => {
       {action === "new" && <AddPlacePage />}
       {loading && <Spinner  />}
       {!loading &&
-        places.length > 0 &&
-        places.map((place) => {
+        places.length === 0 ?
+        <NoPlaceAdded />
+        : (places.map((place) => {
           return (
             <div className="w-full bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto" 
             key={place._id}>
@@ -103,7 +105,7 @@ const PlacesPages = () => {
               </div>
             </div>
           );
-        })}
+        }))}
     </div>
   );
 };

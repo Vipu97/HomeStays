@@ -37,11 +37,14 @@ const SinglePlacePage = () => {
   useEffect(() => {
     fetchPlaceDetails();
     if (user) fetchUserDetails();
+  }, [user]);
+  
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRender(true);
     }, 2000);
     return () => clearTimeout(timer);
-  }, []);
+  },[]);
 
 
   if (!loading && place.length === 0 && shouldRender)
