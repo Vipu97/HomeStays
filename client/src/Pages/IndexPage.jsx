@@ -53,7 +53,7 @@ const IndexPage = () => {
   },[searchInput,originalPlaces]);
 
   if (loading) return <Spinner width={200} height={200} />;
-  if(allPlaces.length === 0){
+  if(allPlaces.length === 0 && searchInput.length > 0){
     return <NoPlaces />;
   }
   return (

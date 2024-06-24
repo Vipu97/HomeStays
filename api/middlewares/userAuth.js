@@ -7,6 +7,8 @@ const jwtSecret = process.env.JWT_SECRET;
 export const isLoggedIn = async (req,res,next) => {
     try{
         const {token} = req.cookies;
+        console.log(token);
+        console.log(jwtSecret);
         if(!token){
             return res.status(401).json({
                 success:false,

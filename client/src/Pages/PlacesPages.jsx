@@ -64,7 +64,7 @@ const PlacesPages = () => {
         <NoPlaceAdded />
         : (places.map((place) => {
           return (
-            <div className="w-full bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto" 
+            <div className="w-[95%] bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto" 
             key={place._id}>
               <div className="flex flex-col gap-2 cursor-pointer sm:flex-row sm:gap-5 items-center">
                 <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto shrink-0 sm:w-[200px] md:h-32">
