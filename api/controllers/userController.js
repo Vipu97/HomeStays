@@ -40,7 +40,11 @@ router.post('/login', async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token).json(user);
+            res.cookie('token', token , {
+                httpOnly : true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Lax',
+            }).json(user);
         });
     } catch (err) {
         res.status(500).json({
@@ -138,7 +142,11 @@ router.post("/auth", async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token).json(user);
+            res.cookie('token', token , {
+                httpOnly : true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'Lax',
+            }).json(user);
         });
     } catch (err) {
         res.status(500).json(err.message);

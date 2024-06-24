@@ -16,7 +16,7 @@ const formattedDate = (date) => {
 
 const footer = () => {
   return(
-    <div className="text-gray-500 font-semibold text-center" >
+    <div className="text-gray-500 font-semibold text-center">
       <p className="md:inline leading-[3px] mt-3"><span className="text-pink">** </span>Disabled dates are already booked by </p>
       <p className="inline"> other visitors.</p>
     </div>
