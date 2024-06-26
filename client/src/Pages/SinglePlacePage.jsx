@@ -58,16 +58,19 @@ const SinglePlacePage = () => {
           <h1 className="text-3xl">{place.title}</h1>
           <AddressLink address={place.address} />
           <PlaceGallery title={place.title} photos={place.photos} />
-          <div className="mt-8 mb-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
-            <div>
+          <div className="mt-8 mb-8 grid gap-2 grid-cols-1 md:grid-cols-[2fr_1fr]">
+            <div className="shrink">
               <div>
                 <h2 className="font-semibold text-2xl mb-1">
                   Description</h2>
                 {place.description}
               </div>
-              <h2 className="font-semibold text-[17px] mt-4">
-                Maximum number of guests allowed : {place.maxGuests}
-              </h2>
+              <p className="font-semibold text-[17px] mt-4">
+                Maximum number of guests allowed :
+                  <span className="text-pink font-bold text-[19px] relative top-[1px]">
+                  {" " + place.maxGuests}
+                  </span>
+              </p>
               <div className="mt-6">
                 <h2 className="text-2xl font-semibold">
                   What this place offers:
@@ -75,8 +78,8 @@ const SinglePlacePage = () => {
                 <PerksOffers perks={place.perks} />
               </div>
             </div>
-            <div className="mt-2 h-fi">
-              {(!user || (user && user.id !== place.owner)) && (
+            <div className="mt-2 shrink-0 min-w-[320px]">
+              {user?._id !== place.owner && (
                 <BookingWidget place={place} alreadyBooked={alreadyBooked} />
               )}
             </div>
@@ -93,7 +96,7 @@ const SinglePlacePage = () => {
                     className="text-pink cursor-pointer font-semibold"
                     onClick={() => setShowFullExtraInfo(false)}
                   >
-                    ...show less
+                    show less
                   </span>
 
                 </pre>
@@ -106,7 +109,7 @@ const SinglePlacePage = () => {
                       className="text-pink cursor-pointer font-semibold"
                       onClick={() => setShowFullExtraInfo(true)}
                     >
-                      ..show more
+                      ...show more
                     </span>
                   }
                 </pre>

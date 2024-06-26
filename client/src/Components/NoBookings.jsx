@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const NoBookings = () => {
   return (
-    <div className="flex flex-col justify-center items-center gap-2">
+    <div className="flex flex-col justify-center items-center gap-2 mx-4">
       <div className="flex flex-col justify-start">
         <h1 className="my-6 text-3xl font-semibold">Trips</h1>
         <hr className="border border-gray-300" />

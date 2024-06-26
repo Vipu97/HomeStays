@@ -10,6 +10,7 @@ import ProfilePage from "./Pages/ProfilePage";
 import SinglePlacePage from "./Pages/SinglePlacePage";
 import AddPlacePage from "./Pages/AddPlacePage";
 import { Slide, ToastContainer, } from "react-toastify";
+import PaymentPage from "./Pages/PaymentPage";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -28,6 +29,7 @@ function App() {
             <Route path="/account/places/new" element={<AddPlacePage />} />
             <Route path="/account/places/:id" element={<AddPlacePage />} />
             <Route path="/place/:id" element={<SinglePlacePage />} />
+            <Route path="/payment" element={<PaymentPage />} />
           </Route>
         </Routes>
       <ToastContainer

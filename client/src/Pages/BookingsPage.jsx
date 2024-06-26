@@ -10,17 +10,17 @@ const BookingsPage = () => {
   const [bookings, setBookings] = useState(null);
   const [loading,setLoading] = useState(true);
 
+  const getBookings = async () => {
+    try {
+      const { data } = await axios.get('/booking/account');
+      setBookings(data);
+      setLoading(false);
+    } catch (error) {
+      console.log('Error: ', error);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const getBookings = async () => {
-      try {
-        const { data } = await axios.get('/booking/account');
-        setBookings(data);
-        setLoading(false);
-      } catch (error) {
-        console.log('Error: ', error);
-        setLoading(false);
-      }
-    };
     getBookings();
   },[]);
   

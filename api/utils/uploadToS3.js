@@ -1,5 +1,9 @@
 import {S3Client,PutObjectCommand} from "@aws-sdk/client-s3"
+import {configDotenv} from "dotenv";
+
+configDotenv();
 const bucket = process.env.BUCKET_NAME;
+
 import fs from "fs";
 
 export const uploadToS3 = async (path,originalFileName,mimetype) => {

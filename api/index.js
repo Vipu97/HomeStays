@@ -7,14 +7,13 @@ import router from "./routes/index.js";
 
 const app = express();
 
-
 dotenv.config();
 
 const PORT = process.env.PORT;
 
 app.use(cors({
     credentials: true,
-    origin: process.env.CLIENT_URL,
+    origin: [process.env.CLIENT_URL,'http://localhost:5173'],
 }))
 app.use(express.json());
 app.use(cookieParser());

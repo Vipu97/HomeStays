@@ -40,11 +40,12 @@ router.post('/login', async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token , {
-                httpOnly : true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'Lax',
-            }).json(user);
+            res.cookie('token', token,
+                {
+                    sameSite: "none",
+                    secure: true,
+
+                }).json(user);
         });
     } catch (err) {
         res.status(500).json({
@@ -126,6 +127,23 @@ router.delete('/bookings', isLoggedIn, async (req, res) => {
     }
 })
 
+//route to get user details by id for messaging without authentication
+
+router.get("/details/:id", async (req, res) => {
+    try {
+        const {id} = req.params;
+        const user = await User.findById(id);
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error',
+            error: err.message, 
+        });
+    }
+
+})
 //route to logged in user with google
 router.post("/auth", async (req, res) => {
     try {
@@ -142,7 +160,10 @@ router.post("/auth", async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token).json(user);
+            res.cookie('token', token, {
+                sameSite: "none",
+                secure: true,
+            }).json(user);
         });
     } catch (err) {
         res.status(500).json(err.message);

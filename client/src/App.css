@@ -3,17 +3,61 @@
     left: -10px;
     width: 40px;
 }
-
+.buttons-container{
+    display: flex;
+    margin: 0 auto;
+}
 .ant-picker-input {
     position: relative;
     right: -10px;
 }
 
+.ant-picker-cell-disabled .ant-picker-cell-inner {
+    color: red; /* Change text color of disabled dates */
+    background-color: #f0f0f0; /* Change background color of disabled dates */
+    border-radius: 50%; /* Make the disabled date look like a circle */
+  }
+
 .ant-picker-header-super-prev-btn,
 .ant-picker-header-super-next-btn {
     display: none;
 }
+.custom-cancel-button {
+    border-color: black;
+    color: black;
+    margin-right : 10px;
+    width: 100px;
+    height: 40px;
+    font-size: 17px !important;
+  }
+  
+  .custom-cancel-button:hover {
+    border-color: #F5385D !important;
+    color: #F5385D !important;
+  }
+  .ant-modal-title {
+    color: #F5385D !important;
+    font-size: 21px !important;
+    margin-top: 10px !important;
+    font-weight: 500 !important;
+  }
+  .custom-ok-button {
+    background-color: #F5385D;
+    border-color: #F5385D;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 60px;
+    height: 40px;
+    font-size: 17px !important;
+  }
+  
+  .custom-ok-button:hover {
+    background-color: white !important;
+    border-color: #F5385D !important;
+    color: black !important;
+  }
 
+  
 @media (width <=767px) {
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;

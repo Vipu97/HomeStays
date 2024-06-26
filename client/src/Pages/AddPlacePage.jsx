@@ -126,7 +126,7 @@ const AddPlacePage = () => {
         required
       />
       <InputHeading text="Photos" />
-      <InputDesc text={"more = better"} isRequired={true} />
+      <InputDesc text={"Add as many photo as you can for better evaluation and judgement"} isRequired={true} />
       <PhotosUploader
         photoLink={photoLink}
         setPhotoLink={setPhotoLink}
@@ -171,7 +171,6 @@ const AddPlacePage = () => {
           />
         </div>
         <div className="w-full md:w-1/2">
-            {/* <h3 className="mt-2 mb-1 font-semibold text-xl">Price per night</h3> */}
             <InputHeading text={'Price per night'}/>
             <InputDesc text={'Try to give reasonable price considering all the factors.(in INR)'} isRequired={true}/>
             <input type="number" value={price} required

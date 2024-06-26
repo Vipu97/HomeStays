@@ -1,9 +1,10 @@
-import React, { useState,useRef } from "react";
-import { Link, Navigate } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../Components/Spinner";
+import GoogleAuth from "../Components/GoogleAuth";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
@@ -11,13 +12,23 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [redirect, setRedirect] = useState(null);
   const confirmPasswordRef = useRef();
+  const navigate = useNavigate();
+
+  function handleRedirect(fallbackUrl) {
+    const redirectUrl = sessionStorage.getItem("redirectUrl");
+    if (redirectUrl) {
+      sessionStorage.removeItem("redirectUrl");
+      navigate(redirectUrl);
+    } else {
+      navigate(fallbackUrl);
+    }
+  }
 
   const registerUser = async (e) => {
     e.preventDefault();
     try {
-      if(password != confirmPassword){
+      if (password != confirmPassword) {
         toast.error("Password didn't mactch");
         confirmPasswordRef.current.focus();
         return;
@@ -26,7 +37,7 @@ const RegisterPage = () => {
       await axios.post("/user/register", { name, email, password });
       setLoading(false);
       toast.success("Account Created!!");
-      setRedirect("/login");
+      handleRedirect("/login");
     } catch (error) {
       if (error && error.response.data.code == 11000)
         toast.info("Email Already registered!!Try to Login");
@@ -36,14 +47,14 @@ const RegisterPage = () => {
         );
     }
   };
-  if (redirect) return <Navigate to={redirect} />;
+
   return (
-    <div className="mt-5 pt-6 grow flex-col items-center">
+    <div className="py-4 grow flex-col items-center">
       {loading ? (
         <Spinner />
       ) : (
         <>
-          <h1 className="text-4xl text-center mb-4 font-bold">Register</h1>
+          <h1 className="text-3xl text-center mb-4 font-bold">Register</h1>
           <form className="flex flex-col items-center justify-center" onSubmit={registerUser}>
             <input
               type="text"
@@ -69,14 +80,14 @@ const RegisterPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <input type="password" 
-            placeholder="confirm password" 
-            className={`w-[90%] border py-2 px-3 my-2 rounded-2xl border-gray-300 xs:w-[400px] ${password.length === 0 && "cursor-not-allowed"}`}
-            value={confirmPassword}
-            disabled = {password.length === 0}
-            onChange={(e) => setConfirmPassword(e.target.value)} 
-            ref={confirmPasswordRef}
-            required
+            <input type="password"
+              placeholder="confirm password"
+              className={`w-[90%] border py-2 px-3 my-2 rounded-2xl border-gray-300 xs:w-[400px] ${password.length === 0 && "cursor-not-allowed"}`}
+              value={confirmPassword}
+              disabled={password.length === 0}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              ref={confirmPasswordRef}
+              required
             />
             <button className="bg-pink p-2 text-white rounded-2xl mt-1 hover:scale-95 transition-all w-[90%] xs:max-w-[400px] font-semibold">
               Register
@@ -87,6 +98,8 @@ const RegisterPage = () => {
                 login
               </Link>
             </div>
+            <div className="text-gray-500 my-3">OR</div>
+            <GoogleAuth handleRedirect={handleRedirect} />
           </form>
         </>
       )}

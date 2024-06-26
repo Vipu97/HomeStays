@@ -9,17 +9,63 @@ import "react-toastify/dist/ReactToastify.css";
 import CancelBookingsWidget from "./CancelBookingsWidget";
 import Input from "react-phone-number-input/input";
 import 'react-phone-number-input/style.css';
+import emailjs from "@emailjs/browser";
+
+const formattedDate = (date) => {
+  return format(
+    parse(date.toString(), "dd/MM/yyyy", new Date()),
+    "dd/MM/yyyy"
+  );
+};
 
 export default function BookingWidget({ place }) {
-  const [checkIn, setCheckIn] = useState(null);
-  const [checkOut, setCheckOut] = useState(null);
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  const [redirect, setRedirect] = useState(null);
   const [bookingDetails, setBookingDetails] = useState("");
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const serviceId = "homestays";
+
+  async function sendMailToHost(){
+    const templateId = "template_host";
+    try{
+      const {data} = await axios.get(`/user/details/${place.owner}`);
+      await emailjs.send(serviceId,templateId,{
+        toName : data.name,
+        toEmail : data.email,
+        subject : "New Booking Confirmation",
+        message : `We are pleased to inform you that your property, "${place.title}", has been successfully booked for ${checkIn} to ${checkOut} by ${user.name}.
+        Complete details about booking will be shared to you soon.So ensure that place will be available to the visitors on the provided dates.
+        If you have any further query regarding this booking then please contact us.`,
+        gratitudeMessage : "Thank you for hosting with us.",
+      })
+    }catch(err){
+      console.error(err.message);
+    }
+  }
+
+  async function sendMailToVisitor(){
+    const templateId = "template_visitor";
+    try{
+      await emailjs.send(serviceId,templateId , {
+        subject : "Booking Confirmation",
+        toName : name,
+        toEmail : user.email,
+        propertyName : place.title,
+        checkIn,
+        checkOut,
+        numberOfGuests,
+        message : `Thank you for booking with HomeStays!. Your desired  place - "${place.title}" has been booked successfully.
+        Our team will soon contact you through your provided number.`,
+        paymentMessage : "We have securely received your booking amount, and we are ready to host you. We look forward to your stay!.",
+      })
+    }catch(err){
+      console.error(err.message);
+    }
+  }
 
   useEffect(() => {
     user && setName(user.name);
@@ -28,7 +74,9 @@ export default function BookingWidget({ place }) {
       setBookingDetails(data);
     };
     if (user) fetchBookingDetails();
-  }, [user,place]);
+  }, [user, place]);
+
+  useEffect(() => emailjs.init("LO_eOCMgdi9cKdqm0"),[]);
 
   let numberOfNights = 0;
   if (checkIn && checkOut) {
@@ -36,28 +84,34 @@ export default function BookingWidget({ place }) {
     const date2 = parse(checkOut.toString(), "dd/MM/yyyy", new Date());
     numberOfNights = differenceInCalendarDays(date2, date1) + 1;
   }
-  const formattedDate = (date) => {
-    return format(
-      parse(date.toString(), "dd/MM/yyyy", new Date()),
-      "dd/MM/yyyy"
-    );
-  };
   async function bookThisPlace() {
     if (!user) {
       toast.warning("Login is required for booking");
-      return setRedirect("/login");
+      sessionStorage.setItem("redirectUrl" , `/place/${place._id}`);
+      navigate("/login");
+      return;
     }
-    if (!checkIn || !checkOut)
+    if(numberOfGuests > place.maxGuests){
+      return toast.error(`Maximum ${place.maxGuests} guests are allowed at a time`);
+    }
+    if (phone == "") {
+      toast.error("Phone number is required for booking");
+      return;
+    }
+    if (!checkIn || !checkOut) {
       toast.error("Sorry!! Place can't be available for the provided dates");
+      return;
+    }
+    const totalPrice = numberOfNights * place.price;
     try {
-      const { data } = await axios.post("/booking", {
+      await axios.post("/booking", {
         checkIn: formattedDate(checkIn),
         checkOut: formattedDate(checkOut),
         numberOfGuests,
         name,
         phone,
         place: place._id,
-        price: numberOfNights * place.price,
+        price: totalPrice,
       });
       await axios.put("/user/bookings", {
         bookingId: data._id,
@@ -69,12 +123,13 @@ export default function BookingWidget({ place }) {
       });
       toast.success("Place Booked!!");
       navigate(`/account/bookings/${data._id}`);
+      sendMailToVisitor();
+      sendMailToHost();
     } catch (err) {
       console.log(err.message);
     }
   }
-  if (redirect)
-    navigate(redirect, { state: { prevPath: `/place/${place._id}` } });
+
 
   return (
     <>
@@ -83,6 +138,8 @@ export default function BookingWidget({ place }) {
           placeId={place._id}
           bookingDetails={bookingDetails}
           setBookingDetails={setBookingDetails}
+          placeTitle={place.title}
+          placeOwner = {place.owner}
         />
       ) : (
         <div className="bg-white shadow py-4 rounded-2xl flex flex-col justify-center items-center min-w-[280px]">
@@ -123,7 +180,7 @@ export default function BookingWidget({ place }) {
                   onChange={setPhone}
                   className="px-2 py-1 outline-none border rounded-md border-gray-300"
                 />
-                
+
               </div>
             )}
           </div>
@@ -143,6 +200,11 @@ export default function BookingWidget({ place }) {
               </span>
             )}
           </button>
+          {(!checkIn || !checkOut) &&
+            <div className="footer text-pink font-bold text-[17px] font-sans">
+              <i className="">Secure Your Dream Stay Today! </i>
+            </div>
+          }
         </div>
       )}
     </>

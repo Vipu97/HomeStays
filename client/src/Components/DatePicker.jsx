@@ -3,7 +3,6 @@ import { DatePicker } from "antd";
 import moment from "moment";
 import {parse,format} from 'date-fns';
 const { RangePicker } = DatePicker;
-import '../utils/dayPicker.css';
 import {toast} from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,13 +15,17 @@ const formattedDate = (date) => {
 
 const footer = () => {
   return(
-    <div className="text-gray-500 font-semibold text-center">
-      <p className="md:inline leading-[3px] mt-3"><span className="text-pink">** </span>Disabled dates are already booked by </p>
-      <p className="inline"> other visitors.</p>
+    <div className="text-gray-500 font-semibold overflow-hidden">
+      <p className="md:inline mt-3 text-wrap whitespace-normal leading-3">
+        <span className="text-pink xs:inline">*</span>
+        Dates in red are either already booked by other
+      </p>
+      <p className="inline"> visitors or they are past dates.</p>
     </div>
   ) 
 }
 const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
+
   const updateDates = (dates) => {
     const checkin = formattedDate(dates[0].$d.toLocaleDateString("en-IN"));
     const checkout = formattedDate(dates[1].$d.toLocaleDateString("en-IN"));
@@ -39,8 +42,8 @@ const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
       // If the selected range includes disabled dates, handle it accordingly
       toast.error("Place is already booked by someone else for that particular period");
       // You can display a message, reset the date range, or handle it based on your requirements
-      setCheckIn(null);
-      setCheckOut(null);
+      setCheckIn("");
+      setCheckOut("");
     } else {
       // If the selected range is valid, update the state
       setCheckIn(checkin);
@@ -73,6 +76,7 @@ const DatePickerRange = ({ setCheckIn, setCheckOut, disabledDates }) => {
         disabledDate={disabledDate}
         renderExtraFooter={footer}
         inputReadOnly
+        allowClear = {false}
       />
     </>
   );
