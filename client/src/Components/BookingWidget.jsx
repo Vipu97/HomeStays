@@ -84,12 +84,16 @@ export default function BookingWidget({ place }) {
     const date2 = parse(checkOut.toString(), "dd/MM/yyyy", new Date());
     numberOfNights = differenceInCalendarDays(date2, date1) + 1;
   }
+  console.log(user);
   async function bookThisPlace() {
     if (!user) {
       toast.warning("Login is required for booking");
       sessionStorage.setItem("redirectUrl" , `/place/${place._id}`);
       navigate("/login");
       return;
+    }
+    if(user._id == place.owner){
+      return toast.error("You cannot book your own hosted place");
     }
     if(numberOfGuests > place.maxGuests){
       return toast.error(`Maximum ${place.maxGuests} guests are allowed at a time`);

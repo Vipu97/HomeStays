@@ -38,13 +38,13 @@ const SinglePlacePage = () => {
     fetchPlaceDetails();
     if (user) fetchUserDetails();
   }, [user]);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRender(true);
-    }, 2000);
+    }, 4000);
     return () => clearTimeout(timer);
-  },[]);
+  }, []);
 
 
   if (!loading && place.length === 0 && shouldRender)
@@ -67,9 +67,9 @@ const SinglePlacePage = () => {
               </div>
               <p className="font-semibold text-[17px] mt-4">
                 Maximum number of guests allowed :
-                  <span className="text-pink font-bold text-[19px] relative top-[1px]">
+                <span className="text-pink font-bold text-[19px] relative top-[1px]">
                   {" " + place.maxGuests}
-                  </span>
+                </span>
               </p>
               <div className="mt-6">
                 <h2 className="text-2xl font-semibold">
@@ -79,9 +79,10 @@ const SinglePlacePage = () => {
               </div>
             </div>
             <div className="mt-2 shrink-0 min-w-[320px]">
-              {user?._id !== place.owner && (
-                <BookingWidget place={place} alreadyBooked={alreadyBooked} />
-              )}
+              <BookingWidget place={place} alreadyBooked={alreadyBooked} />
+              {user._id == place.owner &&
+                <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
+              }
             </div>
           </div>
           <div className="bg-white -mx-8 px-8 py-8 border-t">
@@ -90,7 +91,7 @@ const SinglePlacePage = () => {
             </div>
             <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5 max-w-[100vw] flex">
               {showFullExtraInfo ? (
-                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black" style={{fontFamily:"inherit"}}>
+                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black" style={{ fontFamily: "inherit" }}>
                   {place.extraInfo}
                   <span
                     className="text-pink cursor-pointer font-semibold"
@@ -102,7 +103,7 @@ const SinglePlacePage = () => {
                 </pre>
               ) : (
                 <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black"
-                style={{fontFamily:"inherit"}}>
+                  style={{ fontFamily: "inherit" }}>
                   {place.extraInfo?.substring(0, 1000)}
                   {place.extraInfo?.length > 1000 &&
                     <span
