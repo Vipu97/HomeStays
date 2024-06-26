@@ -34,17 +34,19 @@ const RegisterPage = () => {
         return;
       }
       setLoading(true);
-      await axios.post("/user/register", { name, email, password });
-      setLoading(false);
+      const checkEmail = email.toLowerCase();
+      await axios.post("/user/register", { name, email : checkEmail, password });
       toast.success("Account Created!!");
       handleRedirect("/login");
     } catch (error) {
       if (error && error.response.data.code == 11000)
-        toast.info("Email Already registered!!Try to Login");
+        return toast.info(`Email Already registered. Try to Login with the same email`);
       else
-        toast.error(
-          "Something Wrong happened at our side!! Try after some time"
+        return toast.error(
+          "Something Wrong happened at our side!. Try after some time"
         );
+    }finally{
+      setLoading(false);
     }
   };
 
