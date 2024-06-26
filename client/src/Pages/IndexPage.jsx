@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import axios from "axios";
 import {
   Link,
@@ -25,8 +25,7 @@ const IndexPage = () => {
   const [originalPlaces, setOriginalPlaces] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const { searchInput} =
-    useOutletContext();
+  const { searchInput} = useOutletContext();
   useEffect(() => {
     axios
       .get("/places")
@@ -40,24 +39,25 @@ const IndexPage = () => {
       });
   }, []);
 
+  const filterPlaces = useCallback(debounce(() => {
+    const regex = new RegExp(searchInput, "i");
+    setAllPlaces(
+      originalPlaces.filter(
+        (place) => regex.test(place.title) || regex.test(place.address)
+      )
+    );
+  }),[searchInput,originalPlaces]);
+
   useEffect(() => {
-    const filterPlaces = debounce(() => {
-      const regex = new RegExp(searchInput, "i");
-      setAllPlaces(
-        originalPlaces.filter(
-          (place) => regex.test(place.title) || regex.test(place.address)
-        )
-      );
-    });
-    filterPlaces();
-  },[searchInput,originalPlaces]);
+    searchInput.length > 0 && filterPlaces();
+  },[searchInput,filterPlaces]);
 
   if (loading) return <Spinner width={200} height={200} />;
   if(allPlaces.length === 0 && searchInput.length > 0){
     return <NoPlaces />;
   }
   return (
-    <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+    <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid]-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
       {allPlaces.length > 0 &&
         allPlaces?.map((place) => {
           return (
