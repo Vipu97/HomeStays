@@ -32,7 +32,7 @@ This project is a full-stack web application developed using MERN stack (MongoDB
    - create .env file in the client folder and add these variables
 
      #### VITE_BASE_URL= http://localhost:4000
-
+     #### VITE_GOOGLE_CLIENT_ID= your google auth client id
 
    - create .env file in the api folder and add these variables
 
@@ -62,13 +62,13 @@ This project is a full-stack web application developed using MERN stack (MongoDB
 
 ## Features
 
-- **User Authentication:** Users can sign up, log in, and log out securely. Passwords are hashed for security.
+- **User Authentication:** Users can sign up, log in, and log out securely through google or email. Passwords are hashed for security.
 
-- **View Listings:** Users can view detailed information about each accommodation, including photos, descriptions, amenities.
+- **View Listings:** Users can search and view detailed information about each accommodation, including photos, descriptions, amenities.
 
-- **Make Bookings:** Authenticated users can book accommodations for specific dates.
+- **Make Bookings:** Authenticated users can book accommodations for specific dates and get instant confirmation through their emails.
 
-- **Manage Listings:** Hosts can create, edit, and delete their listings.
+- **Manage Listings:** Hosts can create, edit, and remove their listings and get emails after bookings on their hosted places.
 
 - **Responsive Design:** The application is designed to be responsive and work seamlessly across different devices.
 
@@ -81,3 +81,9 @@ This project is a full-stack web application developed using MERN stack (MongoDB
 - **Tailwind CSS:** A utility-first CSS framework
 - **JWT:** JSON Web Tokens for secure user authentication.
 - **AWS S3:** Cloud-based image management for storing and serving images.
+- **google-outh** For login or signup through google.
+- **emailjs** To Send emails to both visitors and hosts on bookings.
+
+## Future Scope
+
+- To add payment gateway that ensures transaction in indian currency and provide a seamless experience while booking a place.
