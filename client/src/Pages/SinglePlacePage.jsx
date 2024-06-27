@@ -80,7 +80,7 @@ const SinglePlacePage = () => {
             </div>
             <div className="mt-2 shrink-0 min-w-[320px]">
               <BookingWidget place={place} alreadyBooked={alreadyBooked} />
-              {user._id == place.owner &&
+              {(user?._id == place.owner || user?.id == place.owner) &&
                 <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
               }
             </div>

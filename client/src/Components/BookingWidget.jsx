@@ -84,7 +84,7 @@ export default function BookingWidget({ place }) {
     const date2 = parse(checkOut.toString(), "dd/MM/yyyy", new Date());
     numberOfNights = differenceInCalendarDays(date2, date1) + 1;
   }
-  console.log(user);
+
   async function bookThisPlace() {
     if (!user) {
       toast.warning("Login is required for booking");
