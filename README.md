@@ -87,3 +87,8 @@ This project is a full-stack web application developed using MERN stack (MongoDB
 ## Future Scope
 
 - To add payment gateway that ensures transaction in indian currency and provide a seamless experience while booking a place.
+
+
+## 💥 Issues
+
+For major changes, you are welcome to [open an issue](https://github.com/EddieHubCommunity/LinkFree/issues/new/choose) about what you would like to contribute. Enhancements are always encouraged and appreciated.
