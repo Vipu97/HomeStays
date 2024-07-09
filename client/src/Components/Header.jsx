@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../Context/userContext";
-import PriceFilter from "./PriceFilter";
 
 const Header = ({ searchInput, handleQueryChange }) => {
   const { user } = useContext(UserContext);
