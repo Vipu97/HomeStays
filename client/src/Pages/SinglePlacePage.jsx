@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, Suspense, lazy } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import AddressLink from "../Components/AddressLink";
-import PlaceGallery from "../Components/PlaceGallery";
 import PerksOffers from "../Components/PerksOffers";
 import { UserContext } from "../Context/userContext";
-import BookingWidget from "../Components/BookingWidget";
 import Spinner from "../Components/Spinner";
 import NoPlaceFound from "../Components/NoPlaceFound";
+
+const PlaceGallery = lazy(() => import("../Components/PlaceGallery"));
+const BookingWidget = lazy(() => import("../Components/BookingWidget"));
 
 const SinglePlacePage = () => {
   const [place, setPlace] = useState([]);
@@ -57,7 +58,9 @@ const SinglePlacePage = () => {
         <div className="mt-4 bg-gray-200 px-4 pt-3 rounded-3xl xs:px-8 xs:pt-8">
           <h1 className="text-3xl">{place.title}</h1>
           <AddressLink address={place.address} />
-          <PlaceGallery title={place.title} photos={place.photos} />
+          <Suspense fallback={<Spinner />}>
+            <PlaceGallery title={place.title} photos={place.photos} />
+          </Suspense>
           <div className="mt-8 mb-8 grid gap-2 grid-cols-1 md:grid-cols-[2fr_1fr]">
             <div className="shrink">
               <div>
@@ -79,7 +82,9 @@ const SinglePlacePage = () => {
               </div>
             </div>
             <div className="mt-2 shrink-0 min-w-[320px]">
-              <BookingWidget place={place} alreadyBooked={alreadyBooked} />
+              <Suspense fallback={<Spinner />}>
+                <BookingWidget place={place} alreadyBooked={alreadyBooked} />
+              </Suspense>
               {(user?._id == place.owner || user?.id == place.owner) &&
                 <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
               }
