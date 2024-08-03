@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import AddressLink from "../Components/AddressLink";
 import PerksOffers from "../Components/PerksOffers";
 import { UserContext } from "../Context/userContext";
-import Spinner from "../Components/Spinner";
 import NoPlaceFound from "../Components/NoPlaceFound";
+import SinglePageSkeleton from "../Components/SinglePageSkeleton";
+import PlaceGallerySkeleton from "../Components/PlaceGallerySkeleton";
 
 const PlaceGallery = lazy(() => import("../Components/PlaceGallery"));
 const BookingWidget = lazy(() => import("../Components/BookingWidget"));
@@ -25,15 +26,15 @@ const SinglePlacePage = () => {
       setPlace(data);
     } catch (err) {
       console.log(err.response.status);
+    }finally{
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   //function to check whether current place is already booked by user
   const fetchUserDetails = async () => {
     const { data } = await axios.get(`/user`);
     data.bookedPlaces.includes(id) && setAlreadyBooked(true);
-    setLoading(false);
   };
   useEffect(() => {
     fetchPlaceDetails();
@@ -53,12 +54,12 @@ const SinglePlacePage = () => {
   return (
     <>
       {loading ? (
-        <Spinner />
+        <SinglePageSkeleton />
       ) : (
         <div className="mt-4 bg-gray-200 px-4 pt-3 rounded-3xl xs:px-8 xs:pt-8">
           <h1 className="text-3xl">{place.title}</h1>
           <AddressLink address={place.address} />
-          <Suspense fallback={<Spinner />}>
+          <Suspense fallback={<PlaceGallerySkeleton />}>
             <PlaceGallery title={place.title} photos={place.photos} />
           </Suspense>
           <div className="mt-8 mb-8 grid gap-2 grid-cols-1 md:grid-cols-[2fr_1fr]">
@@ -82,9 +83,7 @@ const SinglePlacePage = () => {
               </div>
             </div>
             <div className="mt-2 shrink-0 min-w-[320px]">
-              <Suspense fallback={<Spinner />}>
-                <BookingWidget place={place} alreadyBooked={alreadyBooked} />
-              </Suspense>
+              <BookingWidget place={place} alreadyBooked={alreadyBooked} />
               {(user?._id == place.owner || user?.id == place.owner) &&
                 <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
               }
@@ -104,7 +103,6 @@ const SinglePlacePage = () => {
                   >
                     show less
                   </span>
-
                 </pre>
               ) : (
                 <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black"

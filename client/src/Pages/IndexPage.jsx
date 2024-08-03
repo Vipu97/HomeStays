@@ -4,9 +4,10 @@ import {
   Link,
   useOutletContext,
 } from "react-router-dom";
-import Spinner from "../Components/Spinner";
 import Image from "../Components/Image";
-import NoPlaces from "../Components/NoPlaces";
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeletonLoader from "../Components/IndexSkeleton";
+import "../utils/skeletonBox.css";
 
 const debounce = (func) => {
   let timeoutId;
@@ -26,17 +27,20 @@ const IndexPage = () => {
   const [loading, setLoading] = useState(true);
 
   const { searchInput} = useOutletContext();
+
+  const fetchAllPlaces = async () => {
+    try{
+      const {data} = await axios.get("/places");
+      setAllPlaces(data);
+      setOriginalPlaces(data);
+    }catch(err){
+      console.error("Error while fetching places ", err.message);
+    }finally{
+      setLoading(false);
+    }
+  }
   useEffect(() => {
-    axios
-      .get("/places")
-      .then(({ data }) => {
-        setAllPlaces(data);
-        setOriginalPlaces(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
+    fetchAllPlaces();
   }, []);
 
   const filterPlaces = useCallback(debounce(() => {
@@ -52,12 +56,19 @@ const IndexPage = () => {
     searchInput.length > 0 && filterPlaces();
   },[searchInput,filterPlaces]);
 
-  if (loading) return <Spinner width={200} height={200} />;
-  if(allPlaces.length === 0 && searchInput.length > 0){
-    return <NoPlaces />;
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+        {Array(8).fill().map((_, index) => (
+          <SkeletonLoader key={index} />
+        ))}
+      </div>
+    );
   }
+
   return (
-    <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid]-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
+    <div className="grid grid-cols-1 justify-items-center py-4 px-3 gap-y-8 sm:grid-cols-2 sm:gap-x-4 md:grid-cols-2 md:gap-x-4 lg:grid-cols-3 lg:gap-x-6 xl:grid-cols-4">
       {allPlaces.length > 0 &&
         allPlaces?.map((place) => {
           return (

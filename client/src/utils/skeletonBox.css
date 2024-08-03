@@ -1,0 +1,18 @@
+@keyframes shimmer {
+    0% {
+      background-position: -400% 0;
+    }
+    100% {
+      background-position: 400% 0;
+    }
+  }
+
+
+.skeleton-box {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            rgba(255, 255, 255, 0.4) 50%,
+            rgba(255, 255, 255, 0.2) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite alternate;
+}
