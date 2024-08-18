@@ -3,49 +3,61 @@ const router = express.Router();
 import userController from "../controllers/userController.js";
 import placeController from "../controllers/placeController.js"
 import bookingController from "../controllers/bookingController.js";
-import {Place} from "../models/Place.js";
+import { Place } from "../models/Place.js";
 import imageDownload from "image-downloader";
 import multer from "multer";
 import mime from "mime-types";
-import {uploadToS3} from "../utils/uploadToS3.js";
+import { uploadToS3 } from "../utils/uploadToS3.js";
 
-router.use('/user',userController);
-router.use('/place',placeController);
-router.use('/booking',bookingController);
+router.use('/user', userController);
+router.use('/place', placeController);
+router.use('/booking', bookingController);
 
-const photosMiddleware = multer({dest:'/tmp'});
+const photosMiddleware = multer({ dest: '/tmp' });
 
 //route to get all places for index page
-router.get('/places',async (req,res) => {
-    try{
-        const allPlaces = await Place.find();
+router.get('/places', async (req, res) => {
+    try {
+        const { page, searchKey } = req.query;
+        let allPlaces = [];
+        if (searchKey && !page) {
+            const regex = new RegExp(searchKey, "i");
+            allPlaces = await Place.find();
+            allPlaces = allPlaces.filter(
+                (place) => regex.test(place.title) || regex.test(place.address)
+            );
+        }else {
+            const limit = 8;
+            allPlaces = await Place.find().skip((page - 1) * limit).limit(limit);
+        }
         res.json(allPlaces);
-    }catch(err){
+    } catch (err) {
         res.json(err.message);
     }
 })
 
-router.post('/upload', photosMiddleware.array('photos',50) ,async (req, res) => {
+
+router.post('/upload', photosMiddleware.array('photos', 50), async (req, res) => {
     const uploadedFiles = [];
     for (let i = 0; i < req.files.length; i++) {
-        const { path, originalname,mimetype } = req.files[i];
-        const url = await uploadToS3(path,originalname,mimetype);
+        const { path, originalname, mimetype } = req.files[i];
+        const url = await uploadToS3(path, originalname, mimetype);
         uploadedFiles.push(url);
     }
     res.json(uploadedFiles);
 })
 
-router.post('/upload_by_link', async (req,res) => {
-    try{
-        const {imgLink} = req.body;
+router.post('/upload_by_link', async (req, res) => {
+    try {
+        const { imgLink } = req.body;
         const newName = 'photo' + Date.now() + '.jpg';
         await imageDownload.image({
-          url: imgLink,
-          dest: '/tmp/' + newName,
+            url: imgLink,
+            dest: '/tmp/' + newName,
         });
-        const url = await uploadToS3('/tmp/' + newName, newName, mime.lookup('/tmp/' +newName));
+        const url = await uploadToS3('/tmp/' + newName, newName, mime.lookup('/tmp/' + newName));
         res.json(url);
-    }catch(err){
+    } catch (err) {
         res.json(err);
     }
 });

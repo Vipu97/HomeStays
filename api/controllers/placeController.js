@@ -80,10 +80,10 @@ router.delete('/', isLoggedIn, async (req, res) => {
     }
 })
 
-//route to fetch all details of a particular place.
+//route to fetch all details of a particular place by id or searchkey.
 router.get('/:id', async (req, res) => {
     try{
-        const { id } = req.params;
+        const { id } = req.params;     
         const place = await Place.findById(id);
         res.status(200).json(place);
     }catch(err){
