@@ -35,7 +35,7 @@ const Header = ({ searchInput, handleQueryChange }) => {
         </div>
         {
           pathname === "/" &&
-          <div className="order-2 sm:order-1 flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-md
+          <div className="order-2 sm:order-1 flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-lg
        shadow-gray-300 sm:gap-3 sm:flex sm:px-4 w-full max-w-[400px] lg:max-w-[500px] justify-between h-11 xs:h-auto mx-4 xxs:mx-auto">
             <input
               type="text"
@@ -43,7 +43,6 @@ const Header = ({ searchInput, handleQueryChange }) => {
               className="outline-none w-full pl-2 h-11"
               value={searchInput}
               onChange={handleQueryChange}
-
             />
           </div>
         }
