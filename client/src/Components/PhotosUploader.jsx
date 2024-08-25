@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import Image from "./Image";
 import { toast } from "react-toastify";
@@ -6,30 +6,41 @@ import "react-toastify/dist/ReactToastify.css";
 
 const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }) => {
   const inputRef = useRef();
+  const [isUploading, setIsUploading] = useState(false);
 
   const addPhotoLink = async (e) => {
     e.preventDefault();
     if (photoLink.length === 0) {
       inputRef.current.focus();
-      toast.warning("link to a image required");
+      toast.warning("Link to an image is required");
       return;
     }
-    const { data } = await axios.post("/upload_by_link", {
-      imgLink: photoLink,
-    });
-    setAddedPhotos((prev) => [...prev, data]);
-    setPhotoLink("");
+    setIsUploading(true);
+    toast.promise(
+      axios.post("/upload_by_link", { imgLink: photoLink })
+        .then(({ data }) => {
+          setAddedPhotos((prev) => [...prev, data]);
+          setPhotoLink("");
+        })
+        .finally(() => {
+          setIsUploading(false);
+        }),
+      {
+        error: 'Error adding photo',
+      }
+    );
   };
 
   const handleFileChange = (e) => {
     const files = e.target.files;
+    setIsUploading(true);
     toast.promise(
       uploadPhoto(files).then((filenames) => {
         setAddedPhotos((prev) => [...prev, ...filenames]);
+      }).finally(() => {
+        setIsUploading(false);
       }),
       {
-        pending: 'Uploading Photo',
-        success: 'Uploaded Successfully!',
         error: 'Error while uploading',
       }
     );
@@ -55,21 +66,21 @@ const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }
           console.error("Error uploading photos:", error);
           reject(error);
         });
-
-    }
-  )};
+    });
+  };
 
   const removePhoto = (ev, fileName) => {
     ev.preventDefault();
-    setAddedPhotos(addedPhotos.filter(file => file !== fileName));
+    setAddedPhotos(addedPhotos.filter((file) => file !== fileName));
   };
 
   const setAsMainPhoto = (ev, fileName) => {
     ev.preventDefault();
-    const remainingPhotos = addedPhotos.filter(file => file !== fileName);
+    const remainingPhotos = addedPhotos.filter((file) => file !== fileName);
     const newOrder = [fileName, ...remainingPhotos];
     setAddedPhotos(newOrder);
   };
+
   return (
     <>
       <div className="flex gap-4">
@@ -83,11 +94,11 @@ const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }
           ref={inputRef}
         />
         <button
-          className="bg-pink text-white w-32 h-10 rounded-2xl 
-          font-semibold"
+          className={`bg-pink text-white w-32 h-10 rounded-2xl font-semibold ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={(e) => addPhotoLink(e)}
+          disabled={isUploading}
         >
-          Add Photo
+          {isUploading ? "Uploading..." : "Add Photo"}
         </button>
       </div>
       <div className="mt-2 mb-4 gap-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -107,13 +118,13 @@ const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="white"
                   className="w-6 h-6"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
                   />
                 </svg>
@@ -151,29 +162,19 @@ const PhotosUploader = ({ photoLink, setPhotoLink, addedPhotos, setAddedPhotos }
               </button>
             </div>
           ))}
-        <label className="h-24 border bg-transparent rounded-2xl p-8 text-2xl flex items-center gap-2 justify-center cursor-pointer md:h-32">
-          <input
-            type="file"
-            className="hidden"
-            multiple
-            onChange={(e) => handleFileChange(e)}
-            accept="image/*"
-          />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-            />
-          </svg>{" "}
-          Upload
+        <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-xl p-2 text-2xl text-gray-600">
+          <input type="file" className="hidden" multiple onChange={(e) => handleFileChange(e)} />
+          {isUploading ? (
+            <div className="loader"></div>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+              </svg>
+
+              Upload
+            </>
+          )}
         </label>
       </div>
     </>
