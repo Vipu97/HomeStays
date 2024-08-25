@@ -18,7 +18,7 @@ const photosMiddleware = multer({dest:'/tmp'});
 //route to get all places for index page
 router.get('/places',async (req,res) => {
     try{
-        const allPlaces = await Place.find();
+        const allPlaces = await Place.find({});
         res.json(allPlaces);
     }catch(err){
         res.json(err.message);
