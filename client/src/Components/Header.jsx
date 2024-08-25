@@ -35,12 +35,12 @@ const Header = ({ searchInput, handleQueryChange }) => {
         </div>
         {
           pathname === "/" &&
-          <div className="order-2 sm:order-1 flex items-center border border-gray-300 rounded-full px-2 gap-1 shadow-lg
-       shadow-gray-300 sm:gap-3 sm:flex sm:px-4 w-full max-w-[400px] lg:max-w-[500px] justify-between h-11 xs:h-auto mx-4 xxs:mx-auto">
+          <div className="order-2 sm:order-1 flex items-center border-2 border-gray-300 rounded-full px-2 gap-1 shadow-lg
+       shadow-gray-300 sm:gap-3 sm:flex sm:px-4 w-full max-w-[400px] lg:max-w-[500px] justify-between h-12 xs:h-auto mx-4 xxs:mx-auto">
             <input
               type="text"
               placeholder="Search by any title or location"
-              className="outline-none w-full pl-2 h-11"
+              className="outline-none w-full pl-2 h-full rounded-full"
               value={searchInput}
               onChange={handleQueryChange}
             />

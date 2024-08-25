@@ -13,6 +13,9 @@ export default {
         'xs': '500px',
         'xxs' : '400px',
       },
+      scale: {
+        '102': '1.02',
+      },
     },
   },
   plugins: [],
