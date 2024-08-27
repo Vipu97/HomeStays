@@ -44,7 +44,7 @@ const SinglePlacePage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldRender(true);
-    }, 4000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
 
