@@ -113,7 +113,7 @@ const IndexPage = () => {
               <Link
                 to={`/place/${place._id}`}
                 key={place._id}
-                className="w-full max-w-[400px] xs:max-w-[450px]"
+                className="w-full max-w-[420px] sm:max-w-[470px]"
               >
                 <div className="bg-gray-500 mb-2 rounded-2xl flex hover:scale-102 transition-all">
                   <Image
