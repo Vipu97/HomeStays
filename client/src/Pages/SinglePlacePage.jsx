@@ -26,7 +26,7 @@ const SinglePlacePage = () => {
       setPlace(data);
     } catch (err) {
       console.log(err.response.status);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -56,46 +56,48 @@ const SinglePlacePage = () => {
       {loading ? (
         <SinglePageSkeleton />
       ) : (
-        <div className="mt-4 bg-gray-200 px-4 pt-3 rounded-3xl xs:px-8 xs:pt-8">
-          <h1 className="text-3xl">{place.title}</h1>
-          <AddressLink address={place.address} />
-          <Suspense fallback={<PlaceGallerySkeleton />}>
-            <PlaceGallery title={place.title} photos={place.photos} />
-          </Suspense>
-          <div className="mt-8 mb-8 grid gap-2 grid-cols-1 md:grid-cols-[2fr_1fr]">
-            <div className="shrink">
-              <div>
-                <h2 className="font-semibold text-2xl mb-1">
-                  Description</h2>
-                {place.description}
+        <div className="m-4">
+          <div className="mb-4 rounded-3xl px-4 py-3 xs:px-8 xs:py-8 bg-gray-200">
+            <h1 className="text-3xl">{place.title}</h1>
+            <AddressLink address={place.address} />
+            <Suspense fallback={<PlaceGallerySkeleton />}>
+              <PlaceGallery title={place.title} photos={place.photos} />
+            </Suspense>
+            <div className="mt-8 mb-4 grid gap-2 grid-cols-1 md:grid-cols-[2fr_1fr]">
+              <div className="shrink">
+                <div>
+                  <h2 className="font-semibold text-2xl mb-1">
+                    Description</h2>
+                  {place.description}
+                </div>
+                <p className="font-semibold text-[17px] mt-4">
+                  Maximum number of guests allowed :
+                  <span className="text-pink font-bold text-[19px] relative top-[1px]">
+                    {" " + place.maxGuests}
+                  </span>
+                </p>
+                <div className="mt-6">
+                  <h2 className="text-2xl font-semibold">
+                    What this place offers:
+                  </h2>
+                  <PerksOffers perks={place.perks} />
+                </div>
               </div>
-              <p className="font-semibold text-[17px] mt-4">
-                Maximum number of guests allowed :
-                <span className="text-pink font-bold text-[19px] relative top-[1px]">
-                  {" " + place.maxGuests}
-                </span>
-              </p>
-              <div className="mt-6">
-                <h2 className="text-2xl font-semibold">
-                  What this place offers:
-                </h2>
-                <PerksOffers perks={place.perks} />
+              <div className="mt-2 shrink-0 min-w-[320px]">
+                <BookingWidget place={place} alreadyBooked={alreadyBooked} />
+                {(user?._id == place.owner || user?.id == place.owner) &&
+                  <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
+                }
               </div>
-            </div>
-            <div className="mt-2 shrink-0 min-w-[320px]">
-              <BookingWidget place={place} alreadyBooked={alreadyBooked} />
-              {(user?._id == place.owner || user?.id == place.owner) &&
-                <h1 className="text-blue-500 font-semibold text-center text-xl mt-5 underline underline-offset-2">This Place is hosted by You</h1>
-              }
             </div>
           </div>
-          <div className="bg-white -mx-8 px-8 py-8 border-t">
+          <div className="bg-white px-3 pt-3 xs:px-5 xs:pt-8">
             <div>
               <h2 className="font-semibold text-2xl">Extra info</h2>
             </div>
             <div className="mb-4 mt-2 text-[14px] text-gray-700 leading-5 max-w-[100vw] flex">
               {showFullExtraInfo ? (
-                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black" style={{ fontFamily: "inherit" }}>
+                <pre className="max-w-full w-full py-4 bg-white overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black" style={{ fontFamily: "inherit" }}>
                   {place.extraInfo}
                   <span
                     className="text-pink cursor-pointer font-semibold"
@@ -105,7 +107,7 @@ const SinglePlacePage = () => {
                   </span>
                 </pre>
               ) : (
-                <pre className="max-w-full w-full p-4 bg-white shadow-md overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black"
+                <pre className="max-w-full w-full py-4 bg-white overflow-x-auto whitespace-pre-wrap break-words text-[15px] font-normal text-black"
                   style={{ fontFamily: "inherit" }}>
                   {place.extraInfo?.substring(0, 1000)}
                   {place.extraInfo?.length > 1000 &&

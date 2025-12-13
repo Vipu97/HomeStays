@@ -5,7 +5,7 @@ import axios from "axios";
 import Spinner from "../Components/Spinner";
 import Image from "../Components/Image";
 import NoPlaceAdded from "../Components/NoPlaceAdded";
-import {Button,Modal} from "antd";
+import { Button, Modal } from "antd";
 import { toast } from "react-toastify";
 
 const PlacesPages = () => {
@@ -14,7 +14,7 @@ const PlacesPages = () => {
   const [places, setPlaces] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [modalOpen,setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const PlacesPages = () => {
       console.log(err.message);
     }
   };
-  function handleOkModalButton(placeId){
+  function handleOkModalButton(placeId) {
     removePlace(placeId);
     setModalOpen(false);
   }
@@ -73,10 +73,10 @@ const PlacesPages = () => {
         <NoPlaceAdded />
         : (places.map((place) => {
           return (
-            <div className="w-[95%] bg-gray-100 rounded-xl p-2 mt-5 flex-col max-w-[750px] mx-auto"
+            <div className="w-[95%] bg-gray-100 rounded-xl p-6 mt-5 flex-col max-w-[750px] mx-auto"
               key={place._id}>
               <div className="flex flex-col gap-2 cursor-pointer sm:flex-row sm:gap-5 items-center">
-                <div className="h-36 w-[270px] bg-gray-200 rounded-xl mx-auto shrink-0 sm:w-[200px] md:h-32">
+                <div className="h-40 w-[270px] bg-gray-200 rounded-xl mx-auto shrink-0 sm:w-[200px] md:h-36">
                   <Image
                     src={place.photos[0]}
                     alt="preview-photo"
@@ -84,23 +84,23 @@ const PlacesPages = () => {
                   />
                 </div>
                 <div className="flex-1">
-                  <h2 className="font-semibold text-[18px] text-center mb-2">{place.title}</h2>
+                  <h2 className="font-semibold text-[18px] text-left mb-2">{place.title}</h2>
                   <p className="text-sm hidden sm:inline-block">
                     {place.description.substr(0, 300)}
                     {place.description.length > 300 && "......"}
                   </p>
                 </div>
               </div>
-              <div className="flex justify-center gap-x-8 gap-y-2 mt-2 sm:gap-24 flex-wrap sm:mt-3">
-                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[18px] h-10"
+              <div className="flex justify-center gap-x-8 gap-y-2 mt-6 sm:gap-24 flex-wrap sm:mt-6">
+                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[17px] h-10"
                   onClick={() => navigate(`/place/${place._id}`)}>
                   Preview Place
                 </Button>
-                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[18px] h-10"
+                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[17px] h-10"
                   onClick={() => navigate(`/account/places/${place._id}`)}>
                   Edit Your Place
                 </Button>
-                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[18px] h-10"
+                <Button className="px-4 py-2 bg-pink text-white font-semibold rounded-3xl flex justify-center items-center text-[17px] h-10"
                   onClick={() => setModalOpen(true)}>
                   Remove Place
                 </Button>
@@ -112,6 +112,14 @@ const PlacesPages = () => {
                   onCancel={() => setModalOpen(false)}
                   cancelButtonProps={{ className: "custom-cancel-button" }}
                   okButtonProps={{ className: "custom-ok-button" }}
+                  styles={{
+                    mask: {
+                      background: "rgba(0, 0, 0, 0.05)",
+                    },
+                    modal: {
+                      boxShadow: "none",
+                    },
+                  }}
                 >
                   <p className="text-[15px]">Once removed, your place won't be visible to potential visitors for booking.</p>
                 </Modal>
