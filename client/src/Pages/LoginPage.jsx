@@ -14,12 +14,12 @@ const LoginPage = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  function handleRedirect(fallbackUrl){
+  function handleRedirect(fallbackUrl) {
     const redirectUrl = sessionStorage.getItem("redirectUrl");
-    if(redirectUrl){
+    if (redirectUrl) {
       sessionStorage.removeItem("redirectUrl");
       navigate(redirectUrl);
-    }else{
+    } else {
       navigate(fallbackUrl);
     }
   }
@@ -41,7 +41,7 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-  
+
   return (
     <div className="mt-5 pt-6 grow flex-col items-center">
       {loading ? (

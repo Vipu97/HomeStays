@@ -89,7 +89,7 @@ const IndexPage = () => {
     if (!loadingMore && !isSearching && scrollPosition + windowHeight >= documentHeight / 2) {
       setPage((prevPage) => prevPage + 1); // Load the next page if not searching
     }
-  },[loadingMore, isSearching]);
+  }, [loadingMore, isSearching]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -115,9 +115,9 @@ const IndexPage = () => {
                 key={place._id}
                 className="w-full max-w-[420px] sm:max-w-[470px]"
               >
-                <div className="bg-gray-500 mb-2 rounded-2xl flex hover:scale-102 transition-all">
+                <div className="bg-gray-300 mb-2 rounded-xl flex  h-[220px] xs:h-[250px] sm:h-[280px] shadow-2xl overflow-hidden aspect-auto">
                   <Image
-                    className="rounded-2xl h-[220px] w-[100%] xs:h-[250px] sm:h-[280px] aspect-auto shadow-2xl"
+                    className="rounded-xl h-[100%] w-[100%] hover:scale-105 transition-all duration-300 ease-in-out"
                     src={place.photos?.[0]}
                     alt="place-main-photo"
                   />

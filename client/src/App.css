@@ -3,45 +3,53 @@
     left: -10px;
     width: 40px;
 }
-.buttons-container{
+
+.buttons-container {
     display: flex;
     margin: 0 auto;
 }
+
 .ant-picker-input {
     position: relative;
     right: -10px;
 }
 
 .ant-picker-cell-disabled .ant-picker-cell-inner {
-    color: red; /* Change text color of disabled dates */
-    background-color: #f0f0f0; /* Change background color of disabled dates */
-    border-radius: 50%; /* Make the disabled date look like a circle */
-  }
+    color: red;
+    /* Change text color of disabled dates */
+    background-color: #f0f0f0;
+    /* Change background color of disabled dates */
+    border-radius: 50%;
+    /* Make the disabled date look like a circle */
+}
 
 .ant-picker-header-super-prev-btn,
 .ant-picker-header-super-next-btn {
     display: none;
 }
+
 .custom-cancel-button {
     border-color: black;
     color: black;
-    margin-right : 10px;
+    margin-right: 10px;
     width: 100px;
     height: 40px;
     font-size: 17px !important;
-  }
-  
-  .custom-cancel-button:hover {
+}
+
+.custom-cancel-button:hover {
     border-color: #F5385D !important;
     color: #F5385D !important;
-  }
-  .ant-modal-title {
+}
+
+.ant-modal-title {
     color: #F5385D !important;
     font-size: 21px !important;
     margin-top: 10px !important;
     font-weight: 500 !important;
-  }
-  .custom-ok-button {
+}
+
+.custom-ok-button {
     background-color: #F5385D;
     border-color: #F5385D;
     margin-top: 10px;
@@ -49,23 +57,25 @@
     width: 60px;
     height: 40px;
     font-size: 17px !important;
-  }
-  
-  .custom-ok-button:hover {
+}
+
+.custom-ok-button:hover {
     background-color: white !important;
     border-color: #F5385D !important;
     color: black !important;
-  }
+}
 
-  
+
 @media (width <=767px) {
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: -40px;
     }
+
     .ant-picker-header {
         width: 200px;
     }
+
     .ant-picker-panels {
         width: 580px;
     }
@@ -89,79 +99,104 @@
         width: 450px;
     }
 }
-@media (width <= 591px) {
+
+@media (width <=591px) {
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: 70px;
     }
 }
-@media(width <= 490px){
-    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content thead{
+
+@media(width <=490px) {
+    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content thead {
         display: flex;
         gap: 10px;
     }
-    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content tbody{
+
+    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content tbody {
         display: grid;
         column-gap: 10px;
     }
+
     :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-date-panel {
         width: 180px;
     }
+
     :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout {
         width: 360px;
     }
+
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: -20px;
     }
-    button.ant-picker-header-super-prev-btn{
+
+    button.ant-picker-header-super-prev-btn {
         position: relative;
         left: 40px;
     }
+
     button.ant-picker-header-next-btn {
         position: relative;
         right: 10px;
     }
+
     .ant-picker-header-view {
         position: relative;
         left: -5px;
     }
-    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-header >button {
+
+    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-header>button {
         width: 50px;
     }
 }
-@media(width < 412px){
+
+@media(width < 412px) {
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: 20px;
     }
 }
-@media (width <= 375px) {
-    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content th, :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content td {
+
+@media (width <=375px) {
+
+    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content th,
+    :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-content td {
         min-width: 22px;
         padding: 3px 0px;
     }
+
     :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-cell .ant-picker-cell-inner {
         min-width: 20px;
     }
+
     :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-date-panel {
         width: 165px;
     }
+
     :where(.css-dev-only-do-not-override-1rqnfsa).ant-picker-dropdown .ant-picker-panel-container .ant-picker-panel-layout {
         width: 335px;
     }
+
     .ant-picker-header-view {
         position: relative;
         left: -10px;
     }
+
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: -20px;
     }
 }
-@media (width <= 367px) {
+
+@media (width <=367px) {
     .ant-picker-range-wrapper.ant-picker-date-range-wrapper {
         position: relative;
         left: 20px;
     }
+}
+
+
+:where(.css-dev-only-do-not-override-1c0na6j).ant-modal .ant-modal-content {
+    box-shadow: none;
 }
