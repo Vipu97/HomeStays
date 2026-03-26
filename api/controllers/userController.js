@@ -9,6 +9,13 @@ import { configDotenv } from "dotenv";
 
 configDotenv();
 const jwtSecret = process.env.JWT_SECRET;
+const isProduction = process.env.NODE_ENV === "production";
+
+const getCookieOptions = () => ({
+    httpOnly: true,
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction,
+});
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
@@ -40,12 +47,7 @@ router.post('/login', async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token,
-                {
-                    sameSite: "none",
-                    secure: true,
-
-                }).json(user);
+            res.cookie('token', token, getCookieOptions()).json(user);
         });
     } catch (err) {
         res.status(500).json({
@@ -56,7 +58,7 @@ router.post('/login', async (req, res) => {
 })
 //route to hadle logout of user
 router.post('/logout', async (req, res) => {
-    res.cookie('token', '').json(true);
+    res.clearCookie('token', getCookieOptions()).json(true);
 })
 
 
@@ -160,10 +162,7 @@ router.post("/auth", async (req, res) => {
         jwt.sign({ email: user.email, id: user._id, name: user.name }, jwtSecret, { expiresIn: '24h' }, (err, token) => {
             if (err)
                 throw err;
-            res.cookie('token', token, {
-                sameSite: "none",
-                secure: true,
-            }).json(user);
+            res.cookie('token', token, getCookieOptions()).json(user);
         });
     } catch (err) {
         res.status(500).json(err.message);
